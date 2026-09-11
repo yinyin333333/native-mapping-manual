@@ -4,27 +4,55 @@
   'use strict';
   const status = document.getElementById('copy-status');
   let statusTimer;
-  function appendIdentities(parent, text) {
-    parent.append(document.createTextNode(text));
+  const placeholderPattern = /\{(?:tier|id|density|value\d*|signed\d*)\}/g;
+  function appendPlaceholders(parent, text) {
+    let position = 0;
+    for (const match of text.matchAll(placeholderPattern)) {
+      parent.append(document.createTextNode(text.slice(position, match.index)));
+      const token = document.createElement('span');
+      token.className = 'token-placeholder';
+      token.textContent = match[0];
+      parent.append(token);
+      position = match.index + match[0].length;
+    }
+    parent.append(document.createTextNode(text.slice(position)));
   }
 
-  for (const code of document.querySelectorAll('code[data-language="toml"]')) {
+  for (const code of document.querySelectorAll('code')) {
+    // Preserve authored line breaks and semantic overlap markers.
+    if (code.children.length) continue;
     const text = code.textContent;
+    const language = code.dataset.language;
     const fragment = document.createDocumentFragment();
-    const tokens = /#[^\n]*|"(?:\\.|[^"\\])*"|\[[\w.\-]+\]|\b(?:true|false)\b|-?\b\d+\b|\b[\w-]+(?=\s*=)/g;
+    if (language === 'template') {
+      appendPlaceholders(fragment, text);
+      code.replaceChildren(fragment);
+      continue;
+    }
+    const tokens = /#[^\n]*|"(?:\\.|[^"\\])*"|'[^'\n]*'|^[\t ]*\[\[?[A-Za-z_][\w.-]*\]\]?|\{(?:tier|id|density|value\d*|signed\d*)\}|\b(?:true|false|null)\b|-?\b\d+(?:\.\d+)?\b|\b[A-Za-z_][\w-]*(?=\s*=)|[{}\[\]=,:]/gm;
     let position = 0;
     for (const match of text.matchAll(tokens)) {
-      appendIdentities(fragment, text.slice(position, match.index));
+      fragment.append(document.createTextNode(text.slice(position, match.index)));
       const token = match[0];
+      const trimmed = token.trimStart();
+      let type;
+      if (trimmed.startsWith('#')) type = 'comment';
+      else if (/^\{(?:tier|id|density|value\d*|signed\d*)\}$/.test(token)) type = 'placeholder';
+      else if (/^["']/.test(trimmed)) type = language === 'json' && /^\s*:/.test(text.slice(match.index + token.length)) ? 'key' : 'string';
+      else if (/^\[\[?[A-Za-z_]/.test(trimmed)) type = 'table';
+      else if (/^(true|false|null)$/.test(token)) type = 'boolean';
+      else if (/^-?\d/.test(token)) type = 'number';
+      else if (/^[{}\[\]=,:]$/.test(token)) type = 'punctuation';
+      else type = 'key';
       const span = document.createElement('span');
-      const type = token.startsWith('#') ? 'comment' : token.startsWith('"') ? 'string' : token.startsWith('[') ? 'table' : /^-?\d|^(true|false)$/.test(token) ? 'number' : 'key';
       span.className = `token-${type}`;
-      if (type === 'comment') span.textContent = token;
-      else appendIdentities(span, token);
+      if (type === 'string') appendPlaceholders(span, token);
+      else span.textContent = token;
       fragment.append(span);
       position = match.index + token.length;
     }
-    appendIdentities(fragment, text.slice(position));
+    fragment.append(document.createTextNode(text.slice(position)));
+    if (!code.closest('pre') && /^[a-z_][a-z0-9_]*$/.test(text)) code.classList.add('inline-identifier');
     code.replaceChildren(fragment);
   }
 

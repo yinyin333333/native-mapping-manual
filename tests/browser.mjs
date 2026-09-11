@@ -140,8 +140,8 @@ try {
   await viewport(1440, 1050);
   await navigate(url);
 
-  await check('all thirteen chapters are present in one readable document', async () => {
-    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 13);
+  await check('all twelve chapters are present in one readable document', async () => {
+    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 12);
     assert.equal(await evaluate('document.querySelectorAll("nav").length'), 1);
 
     assert.equal(await evaluate('[...document.querySelectorAll("main > section")].every(node => node.getBoundingClientRect().height > 0)'), true);
@@ -208,7 +208,7 @@ try {
   await check('the full manual and download remain available without JavaScript', async () => {
     await cdp.send('Emulation.setScriptExecutionDisabled', { value: true });
     await navigate(url, false);
-    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 13);
+    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 12);
     assert.ok(await evaluate('document.querySelectorAll("a[download]").length') >= 6);
     assert.ok(await evaluate('document.querySelector("#first-map-code").textContent.includes("[cube_routes.scroll_map]")'));
     await cdp.send('Emulation.setScriptExecutionDisabled', { value: false });
@@ -233,6 +233,58 @@ try {
     await navigate(url);
     await go('structure');
     await screenshot('desktop-plugin-structure');
+  });
+  await check('expanded setup and HUD snippets remain readable at mobile widths', async () => {
+    await navigate(url);
+    for (const width of [1440, 390, 320]) {
+      await viewport(width, 1000);
+      for (const id of ['find-data-ids', 'cubemain-setup', 'hud-standard-snippet', 'hud-hd-snippet', 'stat-layers']) {
+        await go(id);
+        assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `${id}: ${width}`);
+      }
+    }
+    await viewport(1440, 1050);
+    await go('cubemain-setup');
+    await screenshot('desktop-cubemain-setup');
+    await viewport(390, 844);
+    await go('hud-hd-snippet');
+    await screenshot('mobile-hud-snippet');
+  });
+  await check('syntax colors preserve all source text and distinguish JSON keys and HUD tokens', async () => {
+    await navigate(url);
+    const mismatches = await evaluate(`(async () => {
+      const raw = await (await fetch(location.href)).text();
+      const original = new DOMParser().parseFromString(raw, 'text/html');
+      const before = [...original.querySelectorAll('code')];
+      return [...document.querySelectorAll('code')].flatMap((node, i) => node.textContent === before[i].textContent ? [] : [i]);
+    })()`);
+    assert.deepEqual(mismatches, []);
+    assert.ok(await evaluate('document.querySelectorAll("#hud-hd-code .token-key").length') > 5);
+    assert.ok(await evaluate('document.querySelectorAll("#hud-token-examples .token-placeholder").length') >= 7);
+    assert.equal(await evaluate('document.querySelector("#hud-token-examples .token-placeholder").textContent'), '{tier}');
+    assert.equal(await evaluate('document.querySelectorAll("#level-membership .member-grid > div").length'), 5);
+    await go('hud-hd-snippet');
+    await evaluate('document.querySelector("#hud-hd-snippet [data-copy]").click()');
+    await until(() => evaluate('document.querySelector("#copy-status").textContent === "Copied."'), 'JSON copy feedback');
+    const expected = (await readFile(path.join(siteRoot, 'examples/hud-hd-node.json'), 'utf8')).trim();
+    assert.equal((await evaluate('navigator.clipboard.readText()')).replace(/\r\n/g, '\n').trim(), expected.replace(/\r\n/g, '\n'));
+    await until(() => evaluate('document.querySelector("#copy-status").textContent === ""'), 'JSON copy feedback clears');
+  });
+  await check('revised diagrams and template examples fit desktop and mobile', async () => {
+    for (const width of [1440, 390, 320]) {
+      await viewport(width, 1050);
+      for (const id of ['level-membership', 'reuse-comparison', 'trait-allocation', 'density-comparison', 'stat-addition', 'drop-sequence', 'tc-choice', 'hud-token-examples']) {
+        await go(id);
+        assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `${id}: ${width}`);
+      }
+    }
+    await viewport(1440, 1050);
+    await go('level-membership'); await screenshot('desktop-membership');
+    await go('hud-token-examples'); await screenshot('desktop-hud-tokens');
+    await go('first-config'); await screenshot('desktop-syntax');
+    await viewport(390, 844);
+    await go('hud-token-examples'); await screenshot('mobile-hud-tokens');
+    await go('trait-allocation'); await screenshot('mobile-trait-slots');
   });
   await check('no page errors or third-party assets were loaded', async () => {
     assert.deepEqual(errors, []);

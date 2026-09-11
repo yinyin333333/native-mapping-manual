@@ -1,0 +1,34 @@
+{
+  "type": "LayoutItemWidget",
+  "name": "MappingInfoTextWrapper",
+  "fields": {
+    "minHeight": 16,
+    "marginRight": 4,
+    "marginTop": -4,
+    "marginBottom": 4
+  },
+  "children": [
+    {
+      "type": "TextBoxWidget",
+      "name": "MappingInfoText",
+      "fields": {
+        "fitToText": true,
+        "fontType": "16pt",
+        "style": {
+          "fontColor": {
+            "r": 199,
+            "g": 179,
+            "b": 119
+          },
+          "alignment": {
+            "v": "top",
+            "h": "right"
+          },
+          "options": {
+            "newlineHandling": "standard"
+          }
+        }
+      }
+    }
+  ]
+}

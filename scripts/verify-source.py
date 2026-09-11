@@ -113,7 +113,15 @@ def main() -> None:
         output = run([str(executable), str(excerpt), str(context)], capture=True).strip()
         print(f"PASS {identity}: {output}")
         results.append({"example": identity, "kind": "excerpt", "context": attrs["data-context"], "result": output})
-    require(len(results) == 18, "Expected twelve complete examples and six excerpts")
+    require(len(results) == 19, "Expected twelve complete examples and seven excerpts")
+    for variant, filename in [("standard", "hudwarnings.json"), ("hd", "hudwarningshd.json")]:
+        original = json.loads((source / "data/global/ui/layouts" / filename).read_text(encoding="utf-8"))
+        node = next(child for child in original["children"] if child["name"] == "MappingInfoTextWrapper")
+        public = json.loads((ROOT / "examples" / f"hud-{variant}-node.json").read_text(encoding="utf-8"))
+        require(node == public, f"HUD {variant} download differs from source node")
+        shown = next(text for attrs, text in document.blocks if attrs.get("id") == f"hud-{variant}-code")
+        require(json.loads(shown) == public, f"HUD {variant} displayed object differs from download")
+        print(f"PASS {variant} HUD object matches source and displayed JSON")
     after = source_hashes(source)
     require(before == after, "A source file changed during verification")
     report = {"source": str(source), "source_files": before, "source_unchanged": True, "parser_results": results}

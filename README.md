@@ -1,6 +1,6 @@
 # Native Mapping configuration manual
 
-An English static manual for Native Mapping, with thirteen chapters, explanatory diagrams, reference tables, eight worked example pages and twelve complete TOML examples. It includes map selection, global Level reuse, recipe modifiers, density and stats, auras, supplemental Treasure Classes, HUD setup and TCP/IP behavior. There are no simulators or configuration controls.
+An English static manual for Native Mapping, with twelve chapters, explanatory diagrams, reference tables, eight worked example pages and twelve complete TOML examples. It includes map selection, global Level reuse, recipe modifiers, density and stats, auras, supplemental Treasure Classes, HUD setup and TCP/IP behavior. There are no simulators or configuration controls.
 
 ## Local preview
 
@@ -18,6 +18,12 @@ Content is grounded in the plugin's source: `FEATURES_AND_USAGE_KO.md`, the modd
 
 - `npm test`: document links, local assets, privacy and preview access boundaries.
 - `npm run test:browser`: rendering at desktop and mobile widths, keyboard disclosures, anchors, exact copying, no-script reading and external-resource checks, using an isolated Chromium profile.
-- `npm run verify:source -- --source <source-root>`: compiles the original `mapping_core` into this manual's ignored `.test-output/` directory, then parses all twelve complete files and all six context-merged excerpts. The first file's resolved map and HUD text are also checked. Requires CMake, Visual Studio 2022 C++20/x64, Python 3.11+ and an existing toml++ checkout; use `--toml <checkout>` if necessary.
+- `npm run verify:source -- --source <source-root>`: compiles the original `mapping_core` into this manual's ignored `.test-output/` directory, then parses all twelve complete files and all seven context-merged excerpts. The first file's resolved map and HUD text are also checked. Requires CMake, Visual Studio 2022 C++20/x64, Python 3.11+ and an existing toml++ checkout; use `--toml <checkout>` if necessary.
 
 Reports and screenshots are kept under `.test-output/`, which the preview server does not serve. The verifier records source hashes before and after its checks. No plugin installation, deployment or game launch is performed by these commands.
+
+## Installation and data examples
+
+The installation chapter includes effective-data ID lookup, complete CubeMain field assignments, variant-specific HUD merge instructions and a first-run procedure. The effects chapter explains parameterized stat layers with a context-checked single-skill example.
+
+`examples/cubemain-mapping-rows.tsv` contains a reference-schema header and two insertion rows, not a replacement game table. `examples/hud-standard-node.json` and `examples/hud-hd-node.json` are single child objects to merge into the matching layouts, not complete layouts. The source verifier checks both JSON objects against the plugin’s source layouts and the displayed snippets. Game files are not modified by these examples or checks.
