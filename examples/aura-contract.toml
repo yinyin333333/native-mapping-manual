@@ -1,0 +1,38 @@
+# The paid recipe adds one aura without replacing the two random traits.
+# Required exact Red Portal recipes: tsc; tsc+r01+r01.
+# Confirm Conviction skill 123 and the stat/Level IDs in effective data.
+config_version = 1
+
+[traits.conviction]
+text = "Monster Conviction Lv.{value0}"
+monster_aura = { skill_id = 123, level = { min = 5, max = 10, step = 5 } }
+[traits.find]
+text = "Magic Find {signed}%"
+stats = [{ stat_id = 80, target = "player", value = { min = 25, max = 75, step = 25 } }]
+[traits.experience]
+text = "Experience {signed}%"
+stats = [{ stat_id = 85, target = "player", value = 20 }]
+[traits.haste]
+text = "Monster Movement {signed}%"
+stats = [{ stat_id = 67, target = "monster", value = 20 }]
+
+[modifiers.aura_contract]
+forced_traits = ["conviction"]
+trait_count = { min = 3, max = 3 }
+
+[cube_routes.plain]
+inputs = ["tsc"]
+tier = "contract"
+[cube_routes.contracted]
+inputs = ["tsc", "r01", "r01"]
+tier = "contract"
+modifiers = ["aura_contract"]
+
+[tiers.contract]
+trait_count = { min = 2, max = 2 }
+
+[tiers.contract.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 175
+trait_pool = ["find", "experience", "haste"]

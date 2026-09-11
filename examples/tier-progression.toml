@@ -1,0 +1,49 @@
+# Complete TOML example, with external data requirements:
+# Create nm2/nm3 items, the three exact Red Portal recipes, and the two named TCs.
+# Mapping_Tier1 can drop nm2; Mapping_Tier2 can drop nm3. Probabilities belong in TXT.
+# Do not reference these TCs from ordinary drop tables if the reward is tier-only.
+config_version = 1
+
+[cube_routes.first]
+inputs = ["tsc"]
+tier = "tier1"
+
+[cube_routes.second]
+inputs = ["nm2"]
+tier = "tier2"
+
+[cube_routes.third]
+inputs = ["nm3"]
+tier = "tier3"
+
+[tiers.tier1]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier1.progression]
+treasure_class = "Mapping_Tier1"
+trigger = "all_monsters"
+
+[tiers.tier1.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 100
+
+[tiers.tier2]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier2.progression]
+treasure_class = "Mapping_Tier2"
+trigger = "all_monsters"
+
+[tiers.tier2.groups.underground]
+levels = [8, 9]
+entrances = [{ level = 8, weight = 1 }]
+density = 150
+
+[tiers.tier3]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier3.groups.five_levels]
+levels = [21, 22, 23, 24, 25]
+entrances = [{ level = 21, weight = 1 }]
+density = 200

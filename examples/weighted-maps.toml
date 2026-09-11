@@ -1,0 +1,24 @@
+# Complete example: group weights and entrance weights are separate selections.
+# Requires an exact tsc -> Red Portal recipe. Check all Level IDs in your mod.
+config_version = 1
+
+[cube_routes.scroll_map]
+inputs = ["tsc"]
+tier = "tier1"
+
+[tiers.tier1]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier1.groups.field]
+weight = 70
+levels = [2, 3]
+entrances = [{ level = 2, weight = 3 }, { level = 3, weight = 1 }]
+density = { min = 100, max = 150, step = 25 }
+trait_pool = []
+
+[tiers.tier1.groups.underground]
+weight = 30
+levels = [8, 9]
+entrances = [{ level = 8, weight = 100 }]
+density = { min = 125, max = 200, step = 25 }
+trait_pool = []

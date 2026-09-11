@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f4f2eb"><meta name="description" content="Every roll should carry its own compensation: faster monsters with Magic Find, or physical resistance with experience. Bundle the pair into one trait."><title>Keep a challenge and its reward together — Native Mapping</title><link rel="icon" href="../assets/favicon.svg"><link rel="stylesheet" href="../assets/style.css"><script defer src="../assets/app.js"></script></head>
+<body class="task-page"><a class="skip-link" href="#main">Skip to content</a>
+<aside class="sidebar"><a class="brand" href="../index.html" aria-label="Native Mapping manual home">
+    <svg viewBox="0 0 40 44" width="36" height="40" aria-hidden="true"><path d="M8 37V19a12 12 0 0 1 24 0v18M14 37V20a6 6 0 0 1 12 0v17M4 37h32M20 3v6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m20 25 3 5-3 5-3-5Z" fill="currentColor"/></svg>
+    <span>Native Mapping<small>THE CONFIGURATION MANUAL</small></span>
+  </a><div class="edition"><span class="edition-dot"></span> WORKED EXAMPLES <span>Config v1</span></div><nav class="contents" aria-label="Worked examples"><a href="../index.html#examples">← All examples</a><p class="nav-label">Complete configurations</p><a href="./multi-level.html"><span>01</span>A connected dungeon</a><a href="./shared-tiers.html"><span>02</span>One pool, several tiers</a><a href="./risk-reward.html" aria-current="page"><span>03</span>Paired risk and reward</a><a href="./player-loadouts.html"><span>04</span>Recipe-selected loadouts</a><a href="./elemental-trial.html"><span>05</span>An elemental trial</a><a href="./aura-contract.html"><span>06</span>A paid aura contract</a><a href="./modifier-order.html"><span>07</span>Reusable recipe options</a><a href="./endgame-loop.html"><span>08</span>A complete progression loop</a><p class="nav-label">Manual</p><a href="../index.html#installation">Install &amp; configure</a><a href="../index.html#reference">Field reference</a><a href="../index.html#troubleshooting">Troubleshooting</a></nav></aside>
+<div class="document"><header class="topbar"><a href="../index.html#examples">Manual / Worked examples</a><a href="../examples/risk-reward.toml" download="native-mapping.toml">Download TOML ↓</a></header>
+<main id="main"><section id="task-overview" class="chapter task-hero"><div class="eyebrow">COMPOSING EFFECTS</div><h1>Keep a challenge and its reward together</h1><p class="lead">Every roll should carry its own compensation: faster monsters with Magic Find, or physical resistance with experience. Bundle the pair into one trait.</p><nav class="task-jumps" aria-label="On this page"><a href="#prepare">1. Prepare data</a><a href="#configure">2. Configure</a><a href="#result">3. Use the map</a><a href="#adapt">4. Adapt it</a></nav><p class="task-scope">Complete standalone TOML · example values, not a balance preset · no plugin rebuild required</p></section>
+<section id="prepare" class="chapter"><div class="eyebrow">01 / PREPARE THE GAME DATA</div><h2>What to create or confirm</h2><div class="table-scroll"><table><thead><tr><th>File / system</th><th>Required work</th></tr></thead><tbody><tr><th>CubeMain</th><td>One exact tsc → Red Portal recipe.</td></tr><tr><th>ItemStatCost</th><td>Monster movement 67, physical resistance 36, player Magic Find 80 and experience bonus 85.</td></tr><tr><th>Levels</th><td>An eligible Level 2, or your replacement destination.</td></tr></tbody></table></div><p>Use the item, Level, stat and skill IDs from your effective mod data. The complete TOML below does not create TXT rows. If you change an input combination, update both CubeMain and its route.</p></section>
+<section id="configure" class="chapter"><div class="eyebrow">02 / CONFIGURE THE MAP</div><h2>The decisions in this configuration</h2><ol class="instruction-list"><li><h3>Define complete packages</h3><p><code>hunters_bargain</code> contains both monster movement +20 and player MF +75. <code>armored_bargain</code> contains physical resistance +10 and player XP +25.</p></li><li><h3>Select exactly one package</h3><p>The tier sets <code>trait_count = { min = 1, max = 1 }</code>. Group weights do not choose these effects; trait weights 70 and 30 choose between the packages.</p></li><li><h3>Add an unconditional reward separately</h3><p>The tier baseline grants player MF +25 on every result. With the hunters trait, it coalesces with the trait bonus to +100 MF.</p></li></ol><details id="complete-config" class="reference-detail" open><summary>Complete configuration · risk-reward.toml</summary><div class="details-body"><div class="code-block"><div class="code-header"><span>Replace the runtime file with this complete example</span><div><a href="../examples/risk-reward.toml" download="native-mapping.toml">Download</a><button type="button" data-copy>Copy</button></div></div><pre><code id="task-config" data-language="toml" data-kind="complete" data-file="examples/risk-reward.toml"># A challenge and its reward are selected together as ONE trait.
+# Required CubeMain recipe: exact tsc -&gt; Red Portal.
+# Check Level and ItemStatCost IDs against effective mod data.
+config_version = 1
+
+[traits.hunters_bargain]
+weight = 70
+text = &quot;Hunters: monster movement {signed0}%, player MF {signed1}%&quot;
+stats = [
+  { stat_id = 67, target = &quot;monster&quot;, value = 20 },
+  { stat_id = 80, target = &quot;player&quot;, value = 75 }
+]
+
+[traits.armored_bargain]
+weight = 30
+text = &quot;Armored: monster physical resist {signed0}%, player XP {signed1}%&quot;
+stats = [
+  { stat_id = 36, target = &quot;monster&quot;, value = 10 },
+  { stat_id = 85, target = &quot;player&quot;, value = 25 }
+]
+
+[cube_routes.bargain]
+inputs = [&quot;tsc&quot;]
+tier = &quot;bargain&quot;
+
+[tiers.bargain]
+trait_count = { min = 1, max = 1 }
+base_stats = [
+  { stat_id = 80, target = &quot;player&quot;, value = 25, text = &quot;Map Magic Find {signed}%&quot; }
+]
+
+[tiers.bargain.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 175
+trait_pool = [&quot;hunters_bargain&quot;, &quot;armored_bargain&quot;]</code></pre></div></div></details><p>Close the game, back up <code>&lt;scope&gt;/d2rloader/config/native-mapping.toml</code>, then replace it with this file and restart the game and loader. Do not append a complete file to another complete file.</p></section>
+<section id="result" class="chapter"><div class="eyebrow">03 / USE THE MAP</div><h2>What the player should experience</h2><div class="table-scroll"><table><thead><tr><th>Action / result</th><th>Expected behavior</th></tr></thead><tbody><tr><th>Hunters package · 70% trait weight</th><td>175% density; monster movement +20%; player MF +100% total.</td></tr><tr><th>Armored package · 30% trait weight</th><td>175% density; monster physical resistance +10; player MF +25% and XP +25%.</td></tr><tr><th>Leaving the map</th><td>Temporary player bonuses are cleared according to each player’s map membership.</td></tr></tbody></table></div><p>Use the recipe in a fresh game with the required ingredients, enter its portal, and open the automap. Check the tier, density and effect text against the result above. Syntax and rolls are checked against the configuration core; these steps are the in-game checks to perform in your own mod.</p><p class="callout"><strong>Design boundary.</strong> Separate “danger” and “reward” traits do not guarantee one of each. A pool draws traits without replacement; it does not understand categories. Put inseparable effects in one trait.</p></section>
+<section id="adapt" class="chapter"><div class="eyebrow">04 / ADAPT THE DESIGN</div><h2>Change the behavior intentionally</h2><dl class="troubleshooting"><div><dt>Always give both packages</dt><dd>Set the count to 2. Both distinct traits are selected; their effects combine.</dd></div><div><dt>Make the choice rarer</dt><dd>Change the trait weight. Weight changes the chance of the whole package, not individual stats.</dd></div><div><dt>Roll a value inside the package</dt><dd>Replace a fixed value with an integer range. Separate values roll independently unless they share a valid roll_group.</dd></div></dl><p>When merging this design into your existing TOML, copy its referenced traits and modifiers as well as the route and tier. Keep only one root configuration and HUD table, rename colliding identifiers consistently, and check Level overlap across every tier.</p><p><a href="../index.html#effects">Read the relevant configuration rules →</a></p></section></main><footer><a href="../index.html#examples">← Return to the examples</a><a href="#task-overview">Back to top ↑</a></footer></div><p id="copy-status" class="copy-status" role="status" aria-live="polite"></p></body></html>
