@@ -1,6 +1,6 @@
 # Native Mapping configuration manual
 
-An English static manual for Native Mapping, with twelve chapters, explanatory diagrams, reference tables, eight worked example pages and twelve complete TOML examples. It includes map selection, global Level reuse, recipe modifiers, density and stats, auras, supplemental Treasure Classes, HUD setup and TCP/IP behavior. There are no simulators or configuration controls.
+An English static manual for Native Mapping, with twelve chapters, explanatory diagrams, reference tables, eight worked example pages and twelve complete TOML examples. It includes map selection, repeatable Level regeneration and whole-group replacement, recipe modifiers, density and stats, auras, supplemental Treasure Classes, HUD setup and TCP/IP behavior. There are no simulators or configuration controls.
 
 ## Local preview
 
@@ -27,3 +27,11 @@ Reports and screenshots are kept under `.test-output/`, which the preview server
 The installation chapter includes effective-data ID lookup, complete CubeMain field assignments, variant-specific HUD merge instructions and a first-run procedure. The effects chapter explains parameterized stat layers with a context-checked single-skill example.
 
 `examples/cubemain-mapping-rows.tsv` contains a reference-schema header and two insertion rows, not a replacement game table. `examples/hud-standard-node.json` and `examples/hud-hd-node.json` are single child objects to merge into the matching layouts, not complete layouts. The source verifier checks both JSON objects against the plugin’s source layouts and the displayed snippets. Game files are not modified by these examples or checks.
+
+## Regeneration build
+
+The current behavior is based on the reset source tree’s `evidence/RESET_IMPLEMENTATION.md` and `evidence/reset-build.json`; those implementation records take precedence over historical analysis or stale passages in older guides. The web manual retains its version-free presentation. Host and Join must both use the same regeneration-capable build and matching configuration/data; old protocol peers are not compatible. TOML keys and values are unchanged.
+
+Current plugin outputs are `out-reset/bin/NativeMapping.dll` and `out-reset/package`. Do not select copied older output folders. Run the source verifier with `--source <reset-source-root>`; it builds only the configuration checker under `.test-output/native-reset`.
+
+The implementation receipt records Release x64, 3/3 related CTest checks and artifact validation. After that receipt, the user reported successful level regeneration in a gameplay test. This is a bounded user observation, not verification of every Level, Host/Join combination, or quest/event reset. This manual update does not run or deploy the plugin.

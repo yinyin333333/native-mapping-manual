@@ -19,6 +19,7 @@ import tomllib
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / ".test-output"
 SOURCE_FILES = (
+    "evidence/RESET_IMPLEMENTATION.md", "evidence/reset-build.json", "FEATURES_AND_USAGE_KO.md",
     "MODDER_USAGE_GUIDE.md", "MODDER_GUIDE.md", "README.md", "CMakeLists.txt",
     "plugin/CMakeLists.txt", "plugin/native-mapping.toml", "mapping_core/CMakeLists.txt",
     "mapping_core/include/mapping/config/RuntimeConfig.hpp",
@@ -73,14 +74,14 @@ def main() -> None:
     if not args.source:
         parser.error("Supply --source or set NATIVE_MAPPING_SOURCE")
     source = Path(args.source).resolve(strict=True)
-    candidates = [source / "out-compat-1308/_deps/tomlplusplus-src", source / "out/_deps/tomlplusplus-src"]
+    candidates = [source / "out-reset/_deps/tomlplusplus-src", source / "out-compat-1308/_deps/tomlplusplus-src", source / "out/_deps/tomlplusplus-src"]
     toml_source = Path(args.toml).resolve(strict=True) if args.toml else next((p for p in candidates if p.exists()), None)
     require(toml_source is not None, "Supply an existing toml++ checkout with --toml")
     before = source_hashes(source)
     OUTPUT.mkdir(exist_ok=True)
     excerpts_dir = OUTPUT / "excerpts"
     excerpts_dir.mkdir(exist_ok=True)
-    build = OUTPUT / "native-0.9.11"
+    build = OUTPUT / "native-reset"
     run(["cmake", "-S", str(ROOT / "tests/native"), "-B", str(build), "-G", "Visual Studio 17 2022", "-A", "x64", f"-DNATIVE_MAPPING_SOURCE={source}", f"-DTOMLPLUSPLUS_SOURCE={toml_source}"])
     run(["cmake", "--build", str(build), "--config", "Release", "--parallel"])
     executable = build / "Release/manual_source_check.exe"

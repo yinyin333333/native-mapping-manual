@@ -1,5 +1,5 @@
-# Complete example: three tiers reuse one Level pool across games.
-# In one game, a selected group's Levels cannot be selected by ANY tier again.
+# Complete example: three tiers reuse one Level pool in the same game.
+# Every craft rolls all groups. Overlap replaces the whole old group after it is clear.
 # Define matching Red Portal recipes for tsc, r01, and r02 in CubeMain.
 # Stat 39 and all Level IDs must match your effective mod data.
 config_version = 1

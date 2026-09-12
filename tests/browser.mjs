@@ -130,6 +130,7 @@ try {
   const go = async id => {
     await evaluate(`location.hash = ${JSON.stringify(id)}`);
     await delay(90);
+    await evaluate(`document.getElementById(${JSON.stringify(id)}).scrollIntoView()`);
     await settled();
   };
   const screenshot = async name => {
@@ -285,6 +286,21 @@ try {
     await viewport(390, 844);
     await go('hud-token-examples'); await screenshot('mobile-hud-tokens');
     await go('trait-allocation'); await screenshot('mobile-trait-slots');
+  });
+  await check('replacement diagram and repeat procedure remain readable', async () => {
+    await navigate(url);
+    for (const width of [1440, 390, 320]) {
+      await viewport(width, 1050);
+      await go('reuse-comparison');
+      assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true);
+      assert.equal(await evaluate('document.querySelectorAll("#reuse-comparison .replacement-row").length'), 2);
+      await go('repeat-map');
+      assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true);
+    }
+    await viewport(1440, 1050);
+    await go('reuse-comparison'); await screenshot('desktop-regeneration');
+    await viewport(390, 844);
+    await go('reuse-comparison'); await screenshot('mobile-regeneration');
   });
   await check('no page errors or third-party assets were loaded', async () => {
     assert.deepEqual(errors, []);

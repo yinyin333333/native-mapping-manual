@@ -87,3 +87,14 @@ test('HUD snippets and CubeMain insertion rows preserve their expected shapes', 
   assert.equal(lines[1][header.indexOf('numinputs')], '3');
   assert.equal(lines[1][header.indexOf('input 2')], 'r01,qty=2');
 });
+
+
+test('regeneration documentation replaces the old used-Level exclusion policy', async () => {
+  const pages = [html, ...await Promise.all((await readdir(path.join(siteRoot, 'guides'))).filter(name => name.endsWith('.html')).map(name => readFile(path.join(siteRoot, 'guides', name), 'utf8')))];
+  for (const page of pages) assert.doesNotMatch(page, /A used Level stays used|used-Level set|Used Levels in this game|No eligible group remains|cannot be selected by ANY tier again|cross-tier exclusion|two possible activations per game|no unused candidate/i);
+  assert.match(html, /id="reuse-comparison" class="replacement-diagram"/);
+  assert.match(html, /Replace all three Levels/);
+  assert.match(html, /Keep this map/);
+  assert.match(html, /player corpse/);
+  assert.match(html, /automatic refunds/);
+});

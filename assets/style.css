@@ -1308,3 +1308,18 @@ pre code { font-variant-ligatures:none; }
  .token-examples td:before { display:block; font-size:11px; color:#6e6e73; margin-bottom:3px; }
  pre { font-size:13px; }
 }
+/* Whole-group replacement is a before/after relationship, not candidate filtering. */
+.replacement-diagram figcaption { font-size:14px; gap:10px 24px; letter-spacing:0; }
+.replacement-request { display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:16px 20px; background:#edf4ff; border:1px solid #adc6e3; border-radius:8px; margin-bottom:22px; }
+.replacement-request>span,.replacement-result>span { font-size:12px; color:#515154; }
+.replacement-request strong { color:#005a9e; }
+.replacement-request code { font-size:18px; }
+.replacement-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); gap:28px; padding:22px 0; border-top:1px solid #d2d2d7; }
+.replacement-row small { display:block; color:#515154; font-size:13px; margin-bottom:8px; }
+.replacement-row code { font-size:17px; }
+.replacement-row mark { background:#fff0ce; color:#714b00; border-bottom:2px solid #ad770c; }
+.replacement-row strong { color:#714b00; font-size:16px; }
+.replacement-row.keep strong { color:#005a9e; }
+.replacement-row p,.replacement-result p { font-size:14px; margin:8px 0 0; }
+.replacement-result { border-top:1px solid #d2d2d7; padding-top:20px; }
+@media(max-width:580px) { .replacement-row { grid-template-columns:minmax(0,1fr); gap:15px; } .replacement-request { gap:12px; padding:14px; } }
