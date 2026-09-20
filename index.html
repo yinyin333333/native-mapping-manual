@@ -37,7 +37,7 @@
           <li><small>groups</small><strong>Level group</strong><code>field · [2]</code></li>
           <li><small>entrances</small><strong>Destination</strong><code>Level 2</code></li>
         </ol>
-        <p class="figure-note">The map becomes active after the portal pair is successfully created. TOML refers to Levels and items that already exist in your mod.</p>
+        <p class="figure-note">On a successful craft, use the portal to enter the selected map. TOML refers to Levels and items that already exist in your mod.</p>
       </figure>
       <h2 class="subheading">Keep game data and map policy in the right files.</h2>
       <div class="ownership-columns">
@@ -141,7 +141,7 @@ trait_pool = []</code></pre></div>
 <h3>What is regenerated, and what stays?</h3>
 <div class="table-scroll"><table><thead><tr><th>Replaced in the affected area</th><th>Preserved</th></tr></thead><tbody><tr><td>Old portal pair, remaining monsters, floor items, inactive saved unit records and prior population history.</td><td>Level IDs, existing terrain settings and the game/Act seed. This is not a new independent instance or a new random terrain seed.</td></tr><tr><td>Rooms and hunting content through the native generation path; the new map’s density, monster stats and aura apply from its first monster generation.</td><td>Other active maps that do not overlap the replacement area.</td></tr><tr><td>The retired map’s effects, HUD state and supplemental-drop duplicate guard; the new result uses a new generation.</td><td>Game-wide quests and D2RCore event/Herald progress. Quest-dependent bosses, events and rewards do not all restart as if a new game had begun.</td></tr></tbody></table></div>
 <p><strong>Walking back through an existing portal is not recrafting.</strong> Without a new craft, the map keeps its effects and kill state; re-entry does not replenish monsters or stack player bonuses. Ordinary travel into an active Level also enters that map’s effect area.</p>
-<p><strong>Replacement is not a full rollback transaction.</strong> A failure after world cleanup starts can leave old portals or content already removed. A later portal-placement failure need not restore the old map, and failures after the original Cube operation do not guarantee automatic refunds. Recover items and corpses before starting a replacement.</p>
+<p><strong>Collect wanted items before recrafting.</strong> If a new portal fails to appear after replacement has started, the old portal, remaining monsters and floor items may already be gone. Do not rely on the previous map being restored or on automatic refunds of consumed ingredients. Pick up wanted items and recover player corpses before using the recipe again.</p>
 </section>
 
     <section id="recipes" class="chapter" aria-labelledby="recipes-title">
@@ -175,7 +175,7 @@ trait_pool_mode = "replace"
 trait_pool = ["monster_attack", "monster_move", "monster_cast"]
 trait_count = { min = 3, max = 3 }</code></pre></div>
       <ul class="prose-list">
-        <li><code>forced_traits</code> occupy the final count first and are removed from the random candidates. They do not add free slots.</li>
+        <li><code>forced_traits</code> can be declared on a group or supplied by a modifier. They occupy the final <code>trait_count</code> first, are removed from the random candidates, and do not add free slots. For example, a count of 2–11 with one forced group trait means one guaranteed trait plus 1–10 random traits.</li>
         <li><code>extend</code> adds candidates; <code>replace</code> replaces the current pool. Multiple modifiers run in the route's listed order.</li>
         <li>Count precedence is <strong>modifier → group → tier</strong>. Two modifiers with conflicting counts are rejected; the last one does not silently win.</li>
         <li>The maximum count must fit the distinct forced and random candidates. If forced traits exceed the minimum, the effective minimum rises to their count.</li>
@@ -187,7 +187,7 @@ trait_count = { min = 3, max = 3 }</code></pre></div>
       <h3>Density is already a randomizable group setting</h3>
       <p><code>density = 150</code> means 150% of the Level's original monster density. A range such as <code>{ min = 125, max = 200, step = 25 }</code> selects 125, 150, 175, or 200 once for the resolved map.</p>
       <figure id="density-comparison" class="density-comparison"><figcaption><strong>Density scales the underlying density value</strong><span>Illustrative base MonDen: 1,000</span></figcaption><div><code>density = 100</code><span class="density-track"><span style="width:50%"></span></span><strong>1,000 <small>× 1.00</small></strong></div><div><code>density = 150</code><span class="density-track"><span style="width:75%"></span></span><strong>1,500 <small>× 1.50</small></strong></div><div><code>density = 200</code><span class="density-track"><span style="width:100%"></span></span><strong>2,000 <small>× 2.00</small></strong></div><p class="figure-note">These are density values, not exact monster counts. All three bars use the same scale.</p></figure>
-      <p>The allowed multiplier is 1–1000%. Original density zero stays zero. The game's population path caps the resulting MonDen at 10,000. Changing TOML alone does not update an existing populated map. A new craft performs regeneration, with the new density, monster stats and aura available during the first population.</p>
+      <p>The parser accepts any positive TOML integer that fits signed 64-bit storage; there is no 1000% parser ceiling. For example, <code>density = 2000</code> means 2000% (20×) of the Level's original density. Original density zero stays zero. The game's population path caps the resulting MonDen at 10,000, so very large percentages can reach the same native cap. Changing TOML alone does not update an existing populated map. A new craft performs regeneration, with the new density, monster stats and aura available during the first population.</p>
       <h3>Three stat sources add together</h3>
       <div class="table-scroll"><table><thead><tr><th>Source</th><th>Applies when</th><th>Value form</th></tr></thead><tbody><tr><th>Tier <code>base_stats</code></th><td>Every group selected from the tier</td><td>Fixed only</td></tr><tr><th>Group <code>base_stats</code></th><td>This group is selected</td><td>Fixed or range</td></tr><tr><th>Trait <code>stats</code></th><td>This trait is selected</td><td>Fixed or range</td></tr></tbody></table></div>
       <figure id="stat-addition" class="addition-diagram"><figcaption><strong>Magic Find bonuses add to one total</strong><span>Same key: <code>player · stat_id 80 · layer 0</code></span></figcaption><div class="addition-terms"><div><span>Tier baseline</span><strong>+5</strong></div><span aria-hidden="true">+</span><div><span>Group baseline</span><strong>+10</strong></div><span aria-hidden="true">+</span><div><span>Selected trait</span><strong>+15</strong></div><span aria-hidden="true">=</span><div class="addition-total"><span>Map bonus</span><strong>+30%</strong></div></div><p class="figure-note">This +30% is the map’s contribution. Existing character bonuses are separate. A different target or layer is a different key; returning to the map does not add another +30%.</p></figure>
@@ -222,7 +222,7 @@ weight = 50
 text = "Monster Aura: Conviction Lv.{value0}"
 monster_aura = { skill_id = 123, level = 10 }</code></pre></div>
       <p>An aura can use a fixed or ranged level from 1–99. A resolved map permits one monster aura. Keep the pool and forced traits from selecting two aura traits together. An aura trait can also contain stats; its first display value is the aura level, followed by its stat values.</p>
-      <p>In the current implementation, a monster already using the same right-skill ID keeps that existing skill; the plugin does not force its level to match the TOML in that branch. No player transformation or arbitrary state setting is provided.</p>
+      <p>The configured aura is applied to eligible monsters in the active map. No player transformation or arbitrary state setting is provided.</p>
     </section>
 
     <section id="treasure-classes" class="chapter" aria-labelledby="tc-title">
@@ -452,8 +452,8 @@ trait_pool = []</code></pre></div>
         <tr><th><code>difficulty_rank</code></th><td>Optional unsigned 32-bit rank. If used, required and unique on every tier. Ranked monster baseline totals must be non-negative and non-decreasing.</td></tr>
         <tr><th><code>groups.&lt;id&gt;</code></th><td><code>levels</code>: unique IDs, 0–255, non-empty. <code>entrances</code>: non-empty <code>{ level, weight }</code> entries, unique and inside levels. The numeric range alone does not establish a usable destination.</td></tr>
         <tr><th>Group / entrance <code>weight</code></th><td>Positive unsigned 32-bit integer, default 1. Relative to all candidates in that group-selection or entrance-selection pool; prior map use does not remove candidates.</td></tr>
-        <tr><th>Group <code>density</code></th><td>Integer or range, 1–1000; default 100. A percentage of original density.</td></tr>
-        <tr><th>Group effect fields</th><td><code>base_stats</code> allows fixed or ranged values. <code>trait_pool</code> is a list of distinct existing trait IDs. <code>trait_count</code> overrides the tier when present.</td></tr>
+        <tr><th>Group <code>density</code></th><td>Positive signed 64-bit integer or range; default 100. A percentage of original density. The parser has no 1000% ceiling; the native population path caps the resulting MonDen at 10,000.</td></tr>
+        <tr><th>Group effect fields</th><td><code>base_stats</code> allows fixed or ranged values. <code>forced_traits</code> is a list of distinct existing trait IDs that are selected first. <code>trait_pool</code> supplies the remaining random candidates. <code>trait_count</code> overrides the tier when present and counts forced plus random traits together.</td></tr>
         <tr><th><code>traits.&lt;id&gt;</code></th><td><code>weight</code> defaults to 1 and is positive. <code>text</code> defaults to the trait ID. Requires <code>stats</code>, <code>monster_aura</code>, or both.</td></tr>
         <tr><th>A stat entry</th><td><code>stat_id</code>: required, 0–65535. <code>stat</code>: optional name. <code>layer</code>: 0–65535, default 0. <code>target</code>: player or monster, default player. <code>value</code>: signed 32-bit integer or range, default 0; native encoding limits also apply.</td></tr>
         <tr><th>Stat display / sharing</th><td><code>roll_group</code> shares an identical range within one array. <code>text</code> defaults to empty for baseline entries. Optional <code>color</code> is parsed but not emitted as a line color.</td></tr>
