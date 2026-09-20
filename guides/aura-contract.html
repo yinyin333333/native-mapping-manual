@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff"><meta name="description" content="A plain recipe rolls two traits. A second recipe consumes two matching runes and adds Conviction without taking away either random slot."><title>Add a paid aura while keeping two random traits — Native Mapping</title><link rel="icon" href="../assets/favicon.svg"><link rel="stylesheet" href="../assets/style.css"><script defer src="../assets/app.js"></script></head>
+<body class="task-page"><a class="skip-link" href="#main">Skip to content</a>
+<aside class="sidebar"><a class="brand" href="../index.html" aria-label="Native Mapping manual home">
+    <span>Native Mapping</span>
+  </a><nav class="contents" aria-label="Worked examples"><a href="../index.html#examples">← All examples</a><p class="nav-label">Complete configurations</p><a href="./multi-level.html"><span>01</span>A connected dungeon</a><a href="./shared-tiers.html"><span>02</span>One pool, several tiers</a><a href="./risk-reward.html"><span>03</span>Paired risk and reward</a><a href="./player-loadouts.html"><span>04</span>Recipe-selected loadouts</a><a href="./elemental-trial.html"><span>05</span>An elemental trial</a><a href="./aura-contract.html" aria-current="page"><span>06</span>A paid aura contract</a><a href="./modifier-order.html"><span>07</span>Reusable recipe options</a><a href="./endgame-loop.html"><span>08</span>A complete progression loop</a><p class="nav-label">Manual</p><a href="../index.html#installation">Install &amp; configure</a><a href="../index.html#reference">Field reference</a></nav></aside>
+<div class="document"><header class="topbar"><a href="../index.html#examples">Manual / Worked examples</a><a href="../examples/aura-contract.toml" download="native-mapping.toml">Download TOML ↓</a></header>
+<main id="main"><section id="task-overview" class="chapter task-hero"><h1>Add a paid aura while keeping two random traits</h1><p class="lead">A plain recipe rolls two traits. A second recipe consumes two matching runes and adds Conviction without taking away either random slot.</p><nav class="task-jumps" aria-label="On this page"><a href="#prepare">1. Prepare data</a><a href="#configure">2. Configure</a><a href="#result">3. Use the map</a><a href="#adapt">4. Adapt it</a></nav></section>
+<section id="prepare" class="chapter"><h2>What to create or confirm</h2><div class="table-scroll"><table><thead><tr><th>File / system</th><th>Required work</th></tr></thead><tbody><tr><th>CubeMain</th><td>Two exact Red Portal recipes: tsc and tsc + r01 + r01. The second requires two copies, not one.</td></tr><tr><th>Skills / stats</th><td>Monster Conviction skill 123; player MF 80, XP 85 and monster movement 67.</td></tr><tr><th>Levels</th><td>One group [2]. Compare the recipes by leaving and clearing the group before each new craft in the same game.</td></tr></tbody></table></div><p>See <a href="../index.html#find-data-ids">how to find data IDs</a>, <a href="../index.html#cubemain-setup">CubeMain row syntax</a> and <a href="../index.html#hud-merge">HUD node installation</a>.</p><p>Use the item, Level, stat and skill IDs from your effective mod data. The complete TOML below does not create TXT rows. If you change an input combination, update both CubeMain and its route.</p></section>
+<section id="configure" class="chapter"><h2>The decisions in this configuration</h2><ol class="instruction-list"><li><h3>Keep the aura out of the ordinary pool</h3><p>The group pool contains find, experience and haste. A plain recipe can never randomly select Conviction.</p></li><li><h3>Force the aura in a dedicated modifier</h3><p><code>forced_traits = ["conviction"]</code> attaches the aura to the paid route only. The aura level rolls 5 or 10.</p></li><li><h3>Increase the total count</h3><p>The normal count is 2. The paid modifier changes it to 3: one forced aura plus two distinct random traits from the original pool.</p></li></ol><details id="complete-config" class="reference-detail" open><summary>Complete configuration · aura-contract.toml</summary><div class="details-body"><div class="code-block"><div class="code-header"><span>Replace the runtime file with this complete example</span><div><a href="../examples/aura-contract.toml" download="native-mapping.toml">Download</a><button type="button" data-copy>Copy</button></div></div><pre><code id="task-config" data-language="toml" data-kind="complete" data-file="examples/aura-contract.toml"># The paid recipe adds one aura without replacing the two random traits.
+# Required exact Red Portal recipes: tsc; tsc+r01+r01.
+# Confirm Conviction skill 123 and the stat/Level IDs in effective data.
+config_version = 1
+
+[traits.conviction]
+text = &quot;Monster Conviction Lv.{value0}&quot;
+monster_aura = { skill_id = 123, level = { min = 5, max = 10, step = 5 } }
+[traits.find]
+text = &quot;Magic Find {signed}%&quot;
+stats = [{ stat_id = 80, target = &quot;player&quot;, value = { min = 25, max = 75, step = 25 } }]
+[traits.experience]
+text = &quot;Experience {signed}%&quot;
+stats = [{ stat_id = 85, target = &quot;player&quot;, value = 20 }]
+[traits.haste]
+text = &quot;Monster Movement {signed}%&quot;
+stats = [{ stat_id = 67, target = &quot;monster&quot;, value = 20 }]
+
+[modifiers.aura_contract]
+forced_traits = [&quot;conviction&quot;]
+trait_count = { min = 3, max = 3 }
+
+[cube_routes.plain]
+inputs = [&quot;tsc&quot;]
+tier = &quot;contract&quot;
+[cube_routes.contracted]
+inputs = [&quot;tsc&quot;, &quot;r01&quot;, &quot;r01&quot;]
+tier = &quot;contract&quot;
+modifiers = [&quot;aura_contract&quot;]
+
+[tiers.contract]
+trait_count = { min = 2, max = 2 }
+
+[tiers.contract.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 175
+trait_pool = [&quot;find&quot;, &quot;experience&quot;, &quot;haste&quot;]</code></pre></div></div></details><p>Close the game, back up <code>&lt;scope&gt;/d2rloader/config/native-mapping.toml</code>, then replace it with this file and restart the game and loader. Do not append a complete file to another complete file.</p></section>
+<section id="result" class="chapter"><h2>What the player should experience</h2><div class="table-scroll"><table><thead><tr><th>Action / result</th><th>Expected behavior</th></tr></thead><tbody><tr><th>tsc</th><td>Two of find, experience and haste; no aura.</td></tr><tr><th>tsc + r01 + r01</th><td>Conviction plus two of the same three random traits.</td></tr><tr><th>tsc + r01</th><td>Does not match either documented route. Extra ingredients are not automatically interpreted as modifiers.</td></tr></tbody></table></div><p>Use the recipe with the required ingredients, enter its portal, and open the automap. Before repeating a craft, recover needed items and player corpses and move all players and allies out of every Level in the replacement area; rooms must no longer be in use. See <a href="../index.html#repeat-map">the repeat-craft procedure</a>. Check the tier, density and effect text against the result above. Syntax and rolls are checked against the configuration core; these steps are the in-game checks to perform in your own mod.</p><p class="callout"><strong>Design boundary.</strong> A resolved map supports one monster aura. Keep competing aura traits out of the pool.</p></section>
+<section id="adapt" class="chapter"><h2>Change the behavior intentionally</h2><dl class="adaptation-list"><div><dt>Charge a different exact item</dt><dd>Change both CubeMain and the route inputs. Changing only TOML does not create the recipe.</dd></div><div><dt>Make the aura deterministic</dt><dd>Replace its level range with a fixed integer.</dd></div><div><dt>Spend one existing slot on the aura</dt><dd>Remove the count override. With the tier count still 2, the result becomes one forced aura plus one random trait.</dd></div></dl><p>When merging this design into your existing TOML, copy its referenced traits and modifiers as well as the route and tier. Keep only one root configuration and HUD table, rename colliding identifiers consistently, and check Level overlap across every tier to understand which entire groups will be replaced.</p><p><a href="../index.html#recipes">Read the relevant configuration rules →</a></p></section></main><footer><a href="../index.html#examples">← Return to the examples</a><a href="#task-overview">Back to top ↑</a></footer></div><p id="copy-status" class="copy-status" role="status" aria-live="polite"></p></body></html>

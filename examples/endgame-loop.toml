@@ -1,0 +1,103 @@
+# Requires custom nm1/nm2/nm3 items and exact Red Portal CubeMain recipes.
+# Define Mapping_Tier1 and Mapping_Tier2 in TreasureClassEx before enabling.
+# Levels and stats below are illustrative; use effective mod data.
+config_version = 1
+
+[traits.hunters]
+text = "Hunters: monster movement {signed0}%, Magic Find {signed1}%"
+stats = [
+  { stat_id = 67, target = "monster", value = 20 },
+  { stat_id = 80, target = "player", value = 50 }
+]
+[traits.armored]
+text = "Armored: monster physical resist {signed0}%, experience {signed1}%"
+stats = [
+  { stat_id = 36, target = "monster", value = 10 },
+  { stat_id = 85, target = "player", value = 20 }
+]
+
+[cube_routes.tier1]
+inputs = ["nm1"]
+tier = "tier1"
+
+[cube_routes.tier2]
+inputs = ["nm2"]
+tier = "tier2"
+
+[cube_routes.tier3]
+inputs = ["nm3"]
+tier = "tier3"
+
+[tiers.tier1]
+difficulty_rank = 1
+trait_count = { min = 1, max = 1 }
+base_stats = [
+  { stat_id = 39, target = "monster", value = 0, text = "Tier Monster All Resistances {signed}%" },
+  { stat_id = 41, target = "monster", value = 0 },
+  { stat_id = 43, target = "monster", value = 0 },
+  { stat_id = 45, target = "monster", value = 0 },
+]
+
+[tiers.tier1.progression]
+treasure_class = "Mapping_Tier1"
+trigger = "all_monsters"
+
+[tiers.tier1.groups.route1]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 150
+trait_pool = ["hunters", "armored"]
+
+[tiers.tier1.groups.route2]
+levels = [3]
+entrances = [{ level = 3, weight = 1 }]
+density = 150
+trait_pool = ["hunters", "armored"]
+
+[tiers.tier2]
+difficulty_rank = 2
+trait_count = { min = 1, max = 1 }
+base_stats = [
+  { stat_id = 39, target = "monster", value = 5, text = "Tier Monster All Resistances {signed}%" },
+  { stat_id = 41, target = "monster", value = 5 },
+  { stat_id = 43, target = "monster", value = 5 },
+  { stat_id = 45, target = "monster", value = 5 },
+]
+
+[tiers.tier2.progression]
+treasure_class = "Mapping_Tier2"
+trigger = "all_monsters"
+
+[tiers.tier2.groups.route1]
+levels = [8, 9]
+entrances = [{ level = 8, weight = 1 }]
+density = 200
+trait_pool = ["hunters", "armored"]
+
+[tiers.tier2.groups.route2]
+levels = [10]
+entrances = [{ level = 10, weight = 1 }]
+density = 200
+trait_pool = ["hunters", "armored"]
+
+[tiers.tier3]
+difficulty_rank = 3
+trait_count = { min = 1, max = 1 }
+base_stats = [
+  { stat_id = 39, target = "monster", value = 10, text = "Tier Monster All Resistances {signed}%" },
+  { stat_id = 41, target = "monster", value = 10 },
+  { stat_id = 43, target = "monster", value = 10 },
+  { stat_id = 45, target = "monster", value = 10 },
+]
+
+[tiers.tier3.groups.route1]
+levels = [21, 22, 23]
+entrances = [{ level = 21, weight = 1 }]
+density = 250
+trait_pool = ["hunters", "armored"]
+
+[tiers.tier3.groups.route2]
+levels = [24, 25]
+entrances = [{ level = 24, weight = 1 }]
+density = 250
+trait_pool = ["hunters", "armored"]

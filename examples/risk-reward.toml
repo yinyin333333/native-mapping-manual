@@ -1,0 +1,36 @@
+# A challenge and its reward are selected together as ONE trait.
+# Required CubeMain recipe: exact tsc -> Red Portal.
+# Check Level and ItemStatCost IDs against effective mod data.
+config_version = 1
+
+[traits.hunters_bargain]
+weight = 70
+text = "Hunters: monster movement {signed0}%, player MF {signed1}%"
+stats = [
+  { stat_id = 67, target = "monster", value = 20 },
+  { stat_id = 80, target = "player", value = 75 }
+]
+
+[traits.armored_bargain]
+weight = 30
+text = "Armored: monster physical resist {signed0}%, player XP {signed1}%"
+stats = [
+  { stat_id = 36, target = "monster", value = 10 },
+  { stat_id = 85, target = "player", value = 25 }
+]
+
+[cube_routes.bargain]
+inputs = ["tsc"]
+tier = "bargain"
+
+[tiers.bargain]
+trait_count = { min = 1, max = 1 }
+base_stats = [
+  { stat_id = 80, target = "player", value = 25, text = "Map Magic Find {signed}%" }
+]
+
+[tiers.bargain.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 175
+trait_pool = ["hunters_bargain", "armored_bargain"]

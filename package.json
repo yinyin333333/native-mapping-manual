@@ -1,0 +1,13 @@
+{
+  "name": "native-mapping-manual",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A single-page English configuration manual for Native Mapping.",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test tests/site.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "verify:source": "python scripts/verify-source.py"
+  },
+  "engines": { "node": ">=22" }
+}
