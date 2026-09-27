@@ -21,6 +21,8 @@ OUTPUT = ROOT / ".test-output"
 SOURCE_FILES = (
     "evidence/RESET_IMPLEMENTATION.md", "evidence/reset-build.json", "FEATURES_AND_USAGE_KO.md",
     "MODDER_USAGE_GUIDE.md", "MODDER_GUIDE.md", "README.md", "CMakeLists.txt",
+    "MONSTER_OVERRIDES_KO.md", "SUPERUNIQUE_KO.md",
+    "plugin/src/MonsterPopulation.hpp", "plugin/src/MapSuperUnique.hpp", "plugin/src/PluginMain.cpp",
     "plugin/CMakeLists.txt", "plugin/native-mapping.toml", "mapping_core/CMakeLists.txt",
     "mapping_core/include/mapping/config/RuntimeConfig.hpp",
     "mapping_core/src/config/RuntimeConfig.cpp", "mapping_core/src/config/RuntimeRoll.cpp",
@@ -81,7 +83,7 @@ def main() -> None:
     OUTPUT.mkdir(exist_ok=True)
     excerpts_dir = OUTPUT / "excerpts"
     excerpts_dir.mkdir(exist_ok=True)
-    build = OUTPUT / "native-reset"
+    build = OUTPUT / "native-current"
     run(["cmake", "-S", str(ROOT / "tests/native"), "-B", str(build), "-G", "Visual Studio 17 2022", "-A", "x64", f"-DNATIVE_MAPPING_SOURCE={source}", f"-DTOMLPLUSPLUS_SOURCE={toml_source}"])
     run(["cmake", "--build", str(build), "--config", "Release", "--parallel"])
     executable = build / "Release/manual_source_check.exe"
@@ -114,7 +116,7 @@ def main() -> None:
         output = run([str(executable), str(excerpt), str(context)], capture=True).strip()
         print(f"PASS {identity}: {output}")
         results.append({"example": identity, "kind": "excerpt", "context": attrs["data-context"], "result": output})
-    require(len(results) == 19, "Expected twelve complete examples and seven excerpts")
+    require(len(results) == 21, "Expected thirteen complete examples and eight excerpts")
     for variant, filename in [("standard", "hudwarnings.json"), ("hd", "hudwarningshd.json")]:
         original = json.loads((source / "data/global/ui/layouts" / filename).read_text(encoding="utf-8"))
         node = next(child for child in original["children"] if child["name"] == "MappingInfoTextWrapper")

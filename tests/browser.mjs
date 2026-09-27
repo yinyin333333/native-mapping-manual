@@ -141,8 +141,8 @@ try {
   await viewport(1440, 1050);
   await navigate(url);
 
-  await check('all twelve chapters are present in one readable document', async () => {
-    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 12);
+  await check('all thirteen chapters are present in one readable document', async () => {
+    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 13);
     assert.equal(await evaluate('document.querySelectorAll("nav").length'), 1);
 
     assert.equal(await evaluate('[...document.querySelectorAll("main > section")].every(node => node.getBoundingClientRect().height > 0)'), true);
@@ -150,7 +150,7 @@ try {
   });
   await screenshot('desktop-overview');
   await check('native section links scroll to their visible heading', async () => {
-    for (const id of ['installation', 'first-map', 'effects', 'reference', 'overview']) {
+    for (const id of ['installation', 'first-map', 'effects', 'monsters', 'reference', 'overview']) {
       await go(id);
       const bounds = await evaluate(`(() => { const box = document.getElementById(${JSON.stringify(id)}).getBoundingClientRect(); return { top: box.top, bottom: box.bottom, header: document.querySelector('header').getBoundingClientRect().bottom }; })()`);
       assert.ok(bounds.bottom > 0);
@@ -188,7 +188,7 @@ try {
   await check('mobile layouts keep every section inside the viewport', async () => {
     for (const width of [390, 320]) {
       await viewport(width, 844);
-      for (const id of ['overview', 'installation', 'first-map', 'first-config', 'recipes', 'effects', 'treasure-classes', 'reference']) {
+      for (const id of ['overview', 'installation', 'first-map', 'first-config', 'recipes', 'effects', 'monsters', 'monster-setup-code', 'monster-pools', 'superunique-spawn', 'superunique-chance', 'monster-config', 'treasure-classes', 'reference']) {
         await go(id);
         assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `${id} at ${width}px`);
       }
@@ -201,6 +201,12 @@ try {
   await screenshot('mobile-overview');
   await go('first-config');
   await screenshot('mobile-first-configuration');
+  for (const width of [1440, 390]) {
+    await viewport(width, width === 1440 ? 1050 : 844);
+    const label = width === 1440 ? 'desktop' : 'mobile';
+    await go('monsters'); await screenshot(`${label}-monsters`);
+    await go('superunique-chance'); await screenshot(`${label}-superunique-chance`);
+  }
   await check('direct fragment loads reveal folded content', async () => {
     await navigate(`${url}?direct-entry=1#build-commands`);
     const state = await evaluate('({ url: location.href, ready: document.readyState, open: document.querySelector("#build-from-source").open, highlighted: document.querySelectorAll(".token-key").length })');
@@ -209,7 +215,7 @@ try {
   await check('the full manual and download remain available without JavaScript', async () => {
     await cdp.send('Emulation.setScriptExecutionDisabled', { value: true });
     await navigate(url, false);
-    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 12);
+    assert.equal(await evaluate('document.querySelectorAll("main > section.chapter").length'), 13);
     assert.ok(await evaluate('document.querySelectorAll("a[download]").length') >= 6);
     assert.ok(await evaluate('document.querySelector("#first-map-code").textContent.includes("[cube_routes.scroll_map]")'));
     await cdp.send('Emulation.setScriptExecutionDisabled', { value: false });

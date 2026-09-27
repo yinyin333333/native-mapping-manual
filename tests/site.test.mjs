@@ -9,7 +9,7 @@ const html = await readFile(path.join(siteRoot, 'index.html'), 'utf8');
 test('the English manual is static and contains no personal workspace paths', () => {
   assert.match(html, /<html lang="en">/);
   assert.doesNotMatch(html, /MOD AUTHOR GUIDE|Config v1|Turn a CubeMain|troubleshooting/i);
-  assert.equal([...html.matchAll(/class="chapter(?: hero)?"/g)].length, 12);
+  assert.equal([...html.matchAll(/class="chapter(?: hero)?"/g)].length, 13);
   assert.equal([...html.matchAll(/<h1\b/g)].length, 1);
   assert.equal([...html.matchAll(/<input\b|<select\b|<dialog\b|<canvas\b/g)].length, 0);
   assert.doesNotMatch(html, /[C-F]:[\\/]|Users[\\/]|eun|NativeMapping_build_|0\.9\.7/i);
@@ -25,9 +25,9 @@ test('all static assets and the complete configuration download exist', async ()
   for (const [, relative] of html.matchAll(/(?:src|href)="\.\/([^"]+)"/g)) {
     assert.ok((await stat(path.join(siteRoot, relative))).isFile(), relative);
   }
-  assert.equal([...html.matchAll(/data-kind="complete"/g)].length, 1);
-  assert.equal([...html.matchAll(/data-kind="excerpt"/g)].length, 7);
-  assert.equal([...html.matchAll(/data-context="examples\/[^"]+"/g)].length, 7);
+  assert.equal([...html.matchAll(/data-kind="complete"/g)].length, 2);
+  assert.equal([...html.matchAll(/data-kind="excerpt"/g)].length, 8);
+  assert.equal([...html.matchAll(/data-context="examples\/[^"]+"/g)].length, 8);
 });
 
 test('preview serves both root and project-subpath URLs, but not maintenance output', async () => {

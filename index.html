@@ -17,7 +17,7 @@
     <span>Native Mapping</span>
   </a>
 
-  <nav class="contents" aria-label="Contents"><p class="nav-label">The plugin</p><a href="#overview"><span>01</span>What the plugin does</a><a href="#structure"><span>02</span>Features &amp; structure</a><p class="nav-label">Features in detail</p><a href="#tiers-levels"><span>03</span>Tiers, groups &amp; Levels</a><a href="#map-lifetime"><span>04</span>Regeneration &amp; map lifetime</a><a href="#recipes"><span>05</span>Recipes &amp; modifiers</a><a href="#effects"><span>06</span>Density, stats &amp; auras</a><a href="#treasure-classes"><span>07</span>Treasure Classes</a><a href="#hud-network"><span>08</span>HUD &amp; TCP/IP</a><p class="nav-label">Setup, examples & reference</p><a href="#installation"><span>09</span>Install &amp; configure</a><a href="#first-map"><span>10</span>Your first map</a><a href="#examples"><span>11</span>Worked examples</a><a href="#reference"><span>12</span>Field reference</a></nav>
+  <nav class="contents" aria-label="Contents"><p class="nav-label">The plugin</p><a href="#overview"><span>01</span>What the plugin does</a><a href="#structure"><span>02</span>Features &amp; structure</a><p class="nav-label">Features in detail</p><a href="#tiers-levels"><span>03</span>Tiers, groups &amp; Levels</a><a href="#map-lifetime"><span>04</span>Regeneration &amp; map lifetime</a><a href="#recipes"><span>05</span>Recipes &amp; modifiers</a><a href="#effects"><span>06</span>Density, stats &amp; auras</a><a href="#monsters"><span>07</span>Monster pools &amp; SuperUniques</a><a href="#treasure-classes"><span>08</span>Treasure Classes</a><a href="#hud-network"><span>09</span>HUD &amp; TCP/IP</a><p class="nav-label">Setup, examples & reference</p><a href="#installation"><span>10</span>Install &amp; configure</a><a href="#first-map"><span>11</span>Your first map</a><a href="#examples"><span>12</span>Worked examples</a><a href="#reference"><span>13</span>Field reference</a></nav>
 
 </aside>
 
@@ -41,10 +41,10 @@
       </figure>
       <h2 class="subheading">Keep game data and map policy in the right files.</h2>
       <div class="ownership-columns">
-        <div><span class="small-label">GAME DATA</span><h3>What exists in the world</h3><p>Item codes, Cube recipes, terrain, monster composition, stat and skill definitions, ordinary loot, and Treasure Class contents.</p><p class="file-list">CubeMain · Levels · MonStats · ItemStatCost · Skills · TreasureClassEx</p></div>
-        <div><span class="small-label">PLUGIN CONFIGURATION</span><h3>What this map selects</h3><p>The route, tier, weighted Level group, entrance, density, stat rolls, traits, optional monster aura, and supplemental TC.</p><p class="file-list">native-mapping.toml</p></div>
+        <div><span class="small-label">GAME DATA</span><h3>What exists in the world</h3><p>Item codes, Cube recipes, terrain, monster and SuperUnique definitions, default monster pools, stat and skill definitions, ordinary loot, and Treasure Class contents.</p><p class="file-list">CubeMain · Levels · MonStats · SuperUniques · ItemStatCost · Skills · TreasureClassEx</p></div>
+        <div><span class="small-label">PLUGIN CONFIGURATION</span><h3>What this map selects</h3><p>The route, tier, weighted Level group, entrance, density, per-Level monster pools, an optional random SuperUnique, stat rolls, traits, optional monster aura, and supplemental TC.</p><p class="file-list">native-mapping.toml</p></div>
       </div>
-      <p class="callout"><strong>What the plugin does not add:</strong> independent simultaneous copies of a Level, a fresh terrain seed on every craft, a new monster pool system, map-clear rewards, or player transformations. Recrafting can regenerate rooms and hunting content; it does not restart the whole game.</p>
+      <p class="callout"><strong>What the plugin does not add:</strong> independent simultaneous copies of a Level, a fresh terrain seed on every craft, map-clear rewards, or player transformations. Recrafting can regenerate rooms and hunting content; it does not restart the whole game.</p>
     </section>
 
 
@@ -56,6 +56,8 @@
       <tr><th>Entry recipes</th><td>Several exact ingredient combinations can select the same tier or different tiers. A route can also apply modifiers.</td><td><code>cube_routes</code> + real CubeMain recipes</td></tr>
       <tr><th>Destinations</th><td>Weighted groups of existing Levels, each with one or more weighted portal entrances.</td><td><code>tiers.*.groups</code></td></tr>
       <tr><th>Map difficulty and bonuses</th><td>Monster density, fixed tier stats, fixed or rolled group stats, weighted random traits and one optional monster aura.</td><td><code>density</code>, <code>base_stats</code>, <code>traits</code></td></tr>
+      <tr><th>Monster composition</th><td>Override each Level’s Normal, Nightmare/Hell and Normal random-unique pools, or individual slots.</td><td><a href="#monster-pools"><code>groups.*.monsters.&lt;level&gt;</code></a></td></tr>
+      <tr><th>Random SuperUnique</th><td>One optional additional named boss per configured Level and map generation, with a spawn chance and a random location across the Level layout.</td><td><a href="#superunique-spawn"><code>superunique</code></a> + SuperUniques definitions</td></tr>
       <tr><th>Recipe-specific variations</th><td>Force traits, replace or extend their candidate pool, or change the total trait count without duplicating a tier.</td><td><code>modifiers</code></td></tr>
       <tr><th>Repeatable maps</th><td>Recraft the same Levels, replace overlapping groups and regenerate their rooms and hunting content after the area is clear.</td><td>Automatic on crafting; no extra reset setting</td></tr><tr><th>Player effects</th><td>Temporary bonuses or penalties for each player in an active map. The same map rules apply to party members in its Levels.</td><td>Stats with <code>target = "player"</code></td></tr>
       <tr><th>Additional rewards</th><td>One supplemental TC per tier, called after an eligible monster’s ordinary drop. The TC can contain items and child TCs.</td><td><code>progression</code> + TreasureClassEx</td></tr>
@@ -67,7 +69,7 @@
       <div class="table-scroll"><table><thead><tr><th>Object</th><th>Its role</th><th>What its name does not do</th></tr></thead><tbody>
       <tr><th>Route</th><td>Connects an exact compiled Cube recipe to a tier and an ordered modifier list.</td><td>A route name does not create an item or recipe.</td></tr>
       <tr><th>Tier</th><td>A reusable rule set containing fixed baselines, default trait count, groups and an optional reward TC.</td><td>Calling it tier3 does not automatically scale any values.</td></tr>
-      <tr><th>Group</th><td>One candidate map: effect-area Levels, entrance candidates, density and local effect policy.</td><td>A group name does not generate terrain or an instance.</td></tr>
+      <tr><th>Group</th><td>One candidate map: effect-area Levels, entrance candidates, density, per-Level monster settings and local effect policy.</td><td>A group name does not generate terrain or an instance.</td></tr>
       <tr><th>Trait</th><td>One selectable package containing player stats, monster stats, an aura, or a combination.</td><td>Several stats inside a trait do not consume several trait slots.</td></tr>
       <tr><th>Modifier</th><td>A reusable recipe option that changes the pool, forced traits or total count.</td><td>The plugin does not infer modifiers from extra ingredients; a matching route must name them.</td></tr>
       </tbody></table></div>
@@ -76,7 +78,7 @@
       <li><strong>Load configuration.</strong><p>The loader reads the runtime TOML when the plugin loads. The parser resolves named references and validates the configuration. Existing runtime files remain in place across DLL updates.</p></li>
       <li><strong>Match the Cube recipe.</strong><p>CubeMain owns recipe matching and conditions. For an exact Red Portal recipe, the plugin identifies the corresponding route by item codes and quantities.</p></li>
       <li><strong>Resolve a candidate.</strong><p>Select from all configured groups by weight on every craft, including previously selected Levels. Resolve the entrance, density, baselines, modifiers and traits. Prior use does not change the group probabilities.</p></li>
-      <li><strong>Prepare and replace.</strong><p>Find every existing map group touched by the selected Levels, including indirect overlaps. Require the whole replacement area to be clear of players, player corpses and allies, with rooms no longer in use. Retire those maps and clear their old portals and hunting content.</p></li><li><strong>Generate with the new result.</strong><p>The new density, monster stats and aura are prepared before the first monster population. The native portal/room path regenerates the area and commits the new map result. Non-overlapping active maps remain.</p></li>
+      <li><strong>Prepare and replace.</strong><p>Find every existing map group touched by the selected Levels, including indirect overlaps. Require the whole replacement area to be clear of players, player corpses and allies, with rooms no longer in use. Retire those maps and clear their old portals and hunting content.</p></li><li><strong>Generate with the new result.</strong><p>The new density, configured monster pools, monster stats and aura are prepared before the first monster population. Each new map also gets a fresh chance to include its configured SuperUnique. The native portal/room path regenerates the area and commits the new map result. Non-overlapping active maps remain.</p></li>
       <li><strong>Apply rules by location.</strong><p>Players in those Levels receive its player stats; the Host applies the map’s monster-side rules and supplemental drops. Other non-overlapping maps can remain active at the same time.</p></li>
       <li><strong>Leave, return or end the game.</strong><p>Player effects follow each player’s map membership. Re-entry without a new craft preserves the result and kill state. A new craft can replace the area; ending the game clears active map records.</p></li>
       </ol>
@@ -139,8 +141,9 @@ trait_pool = []</code></pre></div>
 <ol class="prose-list"><li><strong>Recover what you need.</strong> Pick up wanted floor items and recover player corpses in the entire old group. Remaining floor items will be removed.</li><li><strong>Leave every affected Level.</strong> All players and allies, including mercenaries and summons, must leave the whole replacement area. In the example, leaving only 140 is not enough if someone remains in 138 or 139.</li><li><strong>Let the rooms become inactive.</strong> Rooms still in use prevent regeneration. The preflight also checks the native ownership conditions needed to clear the area; leaving the visible floor alone is not a guarantee that every room is ready.</li><li><strong>Use the recipe again.</strong> The same recipe or a different tier can select overlapping Levels. A successful replacement removes the old portal pair and opens the new map using its freshly resolved effects.</li></ol>
 <p class="callout"><strong>Precondition refusal is not candidate filtering.</strong> A player, player corpse, ally or room still in use causes refusal before the original Cube operation. Ingredients are not passed to that operation on this path. The next attempt still rolls from all configured groups; it does not skip previously used or occupied destinations.</p>
 <h3>What is regenerated, and what stays?</h3>
-<div class="table-scroll"><table><thead><tr><th>Replaced in the affected area</th><th>Preserved</th></tr></thead><tbody><tr><td>Old portal pair, remaining monsters, floor items, inactive saved unit records and prior population history.</td><td>Level IDs, existing terrain settings and the game/Act seed. This is not a new independent instance or a new random terrain seed.</td></tr><tr><td>Rooms and hunting content through the native generation path; the new map’s density, monster stats and aura apply from its first monster generation.</td><td>Other active maps that do not overlap the replacement area.</td></tr><tr><td>The retired map’s effects, HUD state and supplemental-drop duplicate guard; the new result uses a new generation.</td><td>Game-wide quests and D2RCore event/Herald progress. Quest-dependent bosses, events and rewards do not all restart as if a new game had begun.</td></tr></tbody></table></div>
+<div class="table-scroll"><table><thead><tr><th>Replaced in the affected area</th><th>Preserved</th></tr></thead><tbody><tr><td>Old portal pair, remaining monsters, floor items, inactive saved unit records and prior population history.</td><td>Level IDs, existing terrain settings and the game/Act seed. This is not a new independent instance or a new random terrain seed.</td></tr><tr><td>Rooms and hunting content through the native generation path; the new map’s density, configured monster pools, monster stats and aura apply from its first monster generation.</td><td>Other active maps that do not overlap the replacement area.</td></tr><tr><td>The retired map’s effects, HUD state and supplemental-drop duplicate guard; the new result uses a new generation, so a configured SuperUnique can appear again.</td><td>Game-wide quests and D2RCore event/Herald progress. Quest-dependent bosses, events and rewards do not all restart as if a new game had begun.</td></tr></tbody></table></div>
 <p><strong>Walking back through an existing portal is not recrafting.</strong> Without a new craft, the map keeps its effects and kill state; re-entry does not replenish monsters or stack player bonuses. Ordinary travel into an active Level also enters that map’s effect area.</p>
+<p><strong>A configured SuperUnique belongs to that generation.</strong> Recrafting the same cow Level at the same tier allows its boss to appear again. At <code>chance = 100</code>, the new map gets another boss; lower percentages get a new chance. Re-entering the existing map, reloading its rooms or killing the boss does not trigger another spawn. See <a href="#superunique-spawn">random SuperUnique placement</a>.</p>
 <p><strong>Collect wanted items before recrafting.</strong> If a new portal fails to appear after replacement has started, the old portal, remaining monsters and floor items may already be gone. Do not rely on the previous map being restored or on automatic refunds of consumed ingredients. Pick up wanted items and recover player corpses before using the recipe again.</p>
 </section>
 
@@ -225,8 +228,91 @@ monster_aura = { skill_id = 123, level = 10 }</code></pre></div>
       <p>The configured aura is applied to eligible monsters in the active map. No player transformation or arbitrary state setting is provided.</p>
     </section>
 
+    <section id="monsters" class="chapter" aria-labelledby="monsters-title">
+      <div class="chapter-heading"><span class="chapter-number">07</span><div><h2 id="monsters-title">Choose your map’s monsters.<br>Add a boss to find.</h2></div></div>
+      <p>Give a map its own monster lineup, add a named SuperUnique at a random location, or use both together. You can give different tiers different monsters even when they use the same Level. The monster and boss definitions must already exist in your mod’s game data.</p>
+      <h3 id="monster-example">Start with a map you already use</h3>
+      <ol class="prose-list">
+        <li><strong>Find the map’s group in your runtime TOML.</strong> Open <code>d2rloader/config/native-mapping.toml</code> and find <code>[tiers.&lt;tier&gt;.groups.&lt;group&gt;]</code>. Note its tier name, group name and the Level you want to change.</li>
+        <li><strong>Add a monster table for that Level.</strong> The example below uses tier <code>tier1</code>, group <code>cow_map</code> and Level <code>39</code>. Replace those three parts with your own names and Level ID. That ID must be included in the group’s <code>levels</code> list.</li>
+        <li><strong>Choose the settings you need.</strong> Keep the pool lines to change ordinary monsters, the <code>superunique</code> line to add a boss, or both. If this monster table already exists, edit it instead of adding a second copy.</li>
+      </ol>
+      <div class="code-block"><div class="code-header"><span>Add to your group · example for Level 39</span><div><a href="./examples/map-monsters.toml" download>Complete file ↓</a><button type="button" data-copy>Copy</button></div></div><pre><code id="monster-setup-code" data-language="toml" data-kind="excerpt" data-context="examples/map-monsters.toml">[tiers.tier1.groups.cow_map.monsters.39]
+nummon = 1
+mon = ["zombie1"]
+nmon = ["zombie1"]
+umon = ["zombie1"]
+superunique = { name = "Frozenstein", chance = 100 }</code></pre></div>
+      <p>For this map, the example selects zombies in every difficulty and adds Frozenstein somewhere in Level 39 on each new run. It keeps the group’s existing density. Fixed monsters already placed by the map, such as a DS1 boss, remain.</p>
+      <p>Save the TOML, restart the game and loader, then use your map recipe. To run the same destination again in one game, follow the <a href="#repeat-map">recrafting procedure</a>. In TCP/IP, use matching plugin builds, TOML and effective game data on Host and Join.</p>
+      <h3 id="monster-pools">Choose which monsters appear</h3>
+      <div class="table-scroll"><table><thead><tr><th>Setting</th><th>Use it for</th></tr></thead><tbody>
+        <tr><th><code>mon = ["zombie1"]</code></th><td>The monster candidates in Normal difficulty.</td></tr>
+        <tr><th><code>nmon = ["zombie1"]</code></th><td>The monster candidates in Nightmare and Hell. Those difficulties also choose random uniques from this population.</td></tr>
+        <tr><th><code>umon = ["zombie1"]</code></th><td>Normal difficulty’s random-unique candidates. To add a named boss such as Frozenstein, use <code>superunique</code>.</td></tr>
+        <tr><th><code>nummon = 1</code></th><td>Choose one monster type from the candidates. For a mixture, supply several candidates and increase this number. It counts types, not individual monsters; <a href="#effects"><code>density</code></a> controls population density.</td></tr>
+      </tbody></table></div>
+      <p>Copy names from the <code>Id</code> column of your mod’s <code>MonStats.txt</code>, not the name shown in game. For example, <code>mon = ["zombie1", "skeleton1", "fallen1"]</code> with <code>nummon = 3</code> offers three types in Normal. Set <code>nmon</code> too if you want that lineup in Nightmare and Hell, and set <code>umon</code> for the Normal random-unique pool.</p>
+      <p><strong>An array replaces the entire pool.</strong> A one-entry array leaves only that candidate; the unused slots are cleared. To keep a pool as defined in <code>Levels.txt</code>, omit its setting. Monster definitions must still be eligible to spawn; listing a disabled or otherwise unsuitable monster does not make it usable.</p>
+      <h4>Change only one slot</h4>
+      <p>Use <code>mon1 = "zombie1"</code> to replace just the first Normal slot while keeping the other slots from the Level’s original data. The equivalent keys are <code>nmon1</code> and <code>umon1</code>; all three families support slots 1–25. For each pool, choose either its array or its numbered keys. For example, remove <code>mon = [...]</code> before using <code>mon1</code> in that same table.</p>
+      <p><code>""</code> or <code>-1</code> clears a slot, and an empty array such as <code>mon = []</code> clears a whole pool. Keep candidates together from slot 1: the first empty slot ends the usable list, so setting slot 25 after a gap will not add a candidate. Arrays accept up to 25 candidates; <code>nummon</code> accepts 0–255, with the game selecting at most 13 types.</p>
+      <h3 id="superunique-spawn">Add a boss without changing the ordinary monsters</h3>
+      <p>Keep the Level’s monster-table heading and just the <code>superunique = { name = "Frozenstein", chance = 100 }</code> line. Leave out <code>mon</code>, <code>nmon</code>, <code>umon</code> and <code>nummon</code> to retain the Level’s original population.</p>
+      <p>To choose another boss, replace <code>Frozenstein</code> with the exact <code>Superunique</code> value from your mod’s <code>SuperUniques.txt</code>. This is a different kind of name from a MonStats <code>Id</code>. For a custom mapping boss, prepare its TXT definition and dependencies first; you do not need to add a MonPreset/DS1 placement for this additional spawn.</p>
+      <h4 id="superunique-chance">Make the boss guaranteed or occasional</h4>
+      <div class="table-scroll"><table><thead><tr><th>Your choice</th><th>What to write</th></tr></thead><tbody>
+        <tr><th>Every new map</th><td><code>chance = 100</code>. Leaving out <code>chance</code> also means 100%.</td></tr>
+        <tr><th>A chance on each new map</th><td><code>chance = 25</code> for 25%, or <code>chance = 12.3456789</code> for 12.3456789%.</td></tr>
+        <tr><th>A very small or near-certain chance</th><td>Values can run from <code>0.0000001</code> (one in a billion) through <code>99.9999999</code>, as well as 100.</td></tr>
+        <tr><th>No additional boss</th><td>Remove the <code>superunique</code> setting. Do not use <code>chance = 0</code>; it is not accepted.</td></tr>
+      </tbody></table></div>
+      <p>Use at most seven digits after the decimal point. Write small values as <code>0.0000001</code>, not <code>1e-7</code>. Extra decimal digits cause a configuration error instead of being rounded.</p>
+      <h3>Find the boss and run the map again</h3>
+      <p>The boss can be anywhere in that Level’s layout, including an unexplored area far from the entrance or player. Outdoor, maze and preset Levels are supported. Explore the map normally; a boss assigned to an unloaded area appears when that area loads. The Level still needs a valid place for a monster to stand, even at 100%.</p>
+      <p>Each configured Level gets at most one additional boss per new map. The boss may bring the minions specified in its data. Returning through the portal, revisiting an area or killing the boss does not spawn another. Existing fixed SuperUniques also remain, so use a separate boss definition if you want a distinct mapping encounter.</p>
+      <p><strong>Recrafting starts another run.</strong> If you finish a tiered cow map and use its recipe again, the regenerated map can have its boss again. At 100%, the new run gets another boss; at a lower chance, it gets a fresh chance. Simply leaving and returning to the same run does not retry an unsuccessful roll.</p>
+      <h3>Set the boss’s rewards in your game data</h3>
+      <p>Configure a guaranteed mapstone or a next-tier reward through the boss’s normal TXT and Treasure Class setup. <code>superunique</code> chooses the boss and its spawn chance; it adds no reward settings. The tier’s <a href="#treasure-classes">supplemental Treasure Class</a> remains a separate option.</p>
+      <h3 id="monster-download">Download the complete example</h3>
+      <p>Use this as a starting file, or copy only the monster table into your existing configuration. It contains one <code>tsc</code> route to a Level 39 group with zombies and Frozenstein at 100%. Supply the matching Red Portal <a href="#cubemain-setup">CubeMain recipe</a> and confirm Level 39, <code>zombie1</code> and <code>Frozenstein</code> in your effective data. Do not append the complete file to an existing TOML.</p>
+      <div class="code-block primary-code" id="monster-config"><div class="code-header"><span><b>Complete file</b> · map-monsters.toml</span><div><a href="./examples/map-monsters.toml" download="native-mapping.toml">Download</a><button type="button" data-copy>Copy</button></div></div><pre><code id="map-monsters-code" data-language="toml" data-kind="complete" data-file="examples/map-monsters.toml"># Complete learning example. Requires an exact tsc -&gt; Red Portal CubeMain recipe.
+# Confirm Level 39, MonStats Id zombie1 and SuperUniques Superunique Frozenstein
+# against your mod's effective data. Boss drops remain in TXT / Treasure Classes.
+config_version = 1
+enabled = true
+random_salt = "mapping-example"
+
+[hud]
+enabled = true
+density_text = "Monster Density: {value}%"
+overflow_text = "+{value} more"
+max_lines = 16
+
+[cube_routes.scroll_map]
+inputs = ["tsc"]
+tier = "tier1"
+
+[tiers.tier1]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier1.groups.cow_map]
+weight = 100
+levels = [39]
+entrances = [{ level = 39, weight = 100 }]
+density = 100
+trait_pool = []
+
+[tiers.tier1.groups.cow_map.monsters.39]
+nummon = 1
+mon = ["zombie1"]
+nmon = ["zombie1"]
+umon = ["zombie1"]
+superunique = { name = "Frozenstein", chance = 100 }</code></pre></div>
+    </section>
+
     <section id="treasure-classes" class="chapter" aria-labelledby="tc-title">
-      <div class="chapter-heading"><span class="chapter-number">07</span><div><h2 id="tc-title">The normal drop finishes.<br>Then the extra TC is called.</h2></div></div>
+      <div class="chapter-heading"><span class="chapter-number">08</span><div><h2 id="tc-title">The normal drop finishes.<br>Then the extra TC is called.</h2></div></div>
       <p>A tier can name <strong>one supplemental Treasure Class</strong>. On the Host, an eligible monster drop in that active map runs its ordinary drop path first, then calls the configured TC once. The contents and probabilities remain in <code>TreasureClassEx.txt</code>.</p>
       <div class="code-block"><div class="code-header"><span>Excerpt · tier-progression.toml</span><div><a href="./examples/tier-progression.toml" download>Complete file ↓</a><button type="button" data-copy>Copy</button></div></div><pre><code id="progression-code" data-language="toml" data-kind="excerpt" data-context="examples/tier-progression.toml">[tiers.tier2.progression]
 treasure_class = "Mapping_Tier2"
@@ -258,10 +344,10 @@ trigger = "all_monsters"</code></pre></div>
     </section>
 
     <section id="hud-network" class="chapter" aria-labelledby="hud-title">
-      <div class="chapter-heading"><span class="chapter-number">08</span><div><h2 id="hud-title">One map result, shared by the party.</h2></div></div>
+      <div class="chapter-heading"><span class="chapter-number">09</span><div><h2 id="hud-title">One map result, shared by the party.</h2></div></div>
       <div class="ownership-columns">
-        <div><span class="small-label">HOST</span><h3>Owns gameplay decisions</h3><p>Chooses the destination and map result. Applies authoritative player and monster stats, density, auras, and supplemental drops.</p></div>
-        <div><span class="small-label">JOIN</span><h3>Mirrors the resolved map</h3><p>Replays the received route and seed against local configuration and checks the result fingerprint. Displays the map and local player stats; it does not make a second supplemental drop roll.</p></div>
+        <div><span class="small-label">HOST</span><h3>Owns gameplay decisions</h3><p>Chooses the destination and map result. Applies authoritative player and monster stats, density, configured monster pools, SuperUnique spawning, auras, and supplemental drops.</p></div>
+        <div><span class="small-label">JOIN</span><h3>Mirrors the resolved map</h3><p>Replays the received route and seed against local configuration and checks the result fingerprint. Displays the map and local player stats; it does not make a second supplemental drop roll or independently spawn another configured SuperUnique.</p></div>
       </div>
       <p>Use the same regeneration-capable plugin build, runtime TOML, and effective mod data on Host and Join. Older DLLs are not compatible with the retirement/result synchronization used by this build. Mismatched routes or resolved results are rejected. The plugin network service is for local/TCP-IP games, not Battle.net.</p>
       <p>Effect cleanup follows the individual player's destination. A Host leaving a map does not remove the bonuses of a Join who stays there. A player arriving at a map with no player stats loses the old map's effects. Host snapshot identity and local lifecycle identity are kept separate. Before replacement, the Host also synchronizes the old map’s retirement; Join receives the new result as a new generation so an old result does not restore a retired map.</p>
@@ -281,7 +367,7 @@ trigger = "all_monsters"</code></pre></div>
     </section>
 
     <section id="installation" class="chapter" aria-labelledby="installation-title">
-      <div class="chapter-heading"><span class="chapter-number">09</span><div><h2 id="installation-title">Install once. Edit the runtime TOML.</h2></div></div>
+      <div class="chapter-heading"><span class="chapter-number">10</span><div><h2 id="installation-title">Install once. Edit the runtime TOML.</h2></div></div>
       <p>Use a Native Mapping DLL built for your D2RLoader/game build. Close the game before replacing plugin files. A configuration edit does not require recompiling the plugin.</p>
       <ol class="instruction-list">
         <li><h3>Place the DLL in the loader's active scope</h3><p><code>&lt;scope&gt;</code> is the scope root used by your loader setup. It is a placeholder, not a literal folder name.</p><div class="code-block"><div class="code-header"><span>Plugin location</span><button type="button" data-copy>Copy</button></div><pre><code>&lt;scope&gt;/d2rloader/plugins/NativeMapping.dll</code></pre></div></li>
@@ -295,6 +381,8 @@ trigger = "all_monsters"</code></pre></div>
       <div class="table-scroll"><table><thead><tr><th>TOML field</th><th>Where to look</th><th>What to copy</th></tr></thead><tbody>
       <tr><th><code>inputs</code></th><td><code>misc.txt</code>, <code>weapons.txt</code> or <code>armor.txt</code></td><td>The item’s <code>code</code>, not its display name, item type or localization key. Scroll of Town Portal uses <code>tsc</code> in the reference data.</td></tr>
       <tr><th><code>levels</code>, entrance <code>level</code></th><td><code>levels.txt</code></td><td>Find the intended <code>Name</code> and read <code>Id</code>. Reference Level 2 is <code>Act 1 - Wilderness 1</code>. Check the actual area and its connections before grouping Levels.</td></tr>
+      <tr><th><code>mon</code>, <code>nmon</code>, <code>umon</code> and numbered slots</th><td><code>monstats.txt</code></td><td>The <code>Id</code> key, such as <code>zombie1</code>. Numeric values refer to actual compiled row indices. These names resolve to monster definitions.</td></tr>
+      <tr><th><code>superunique.name</code></th><td><code>superuniques.txt</code></td><td>The <code>Superunique</code> key, such as <code>Frozenstein</code>. Keep its monster, minion and TC dependencies valid in the effective data.</td></tr>
       <tr><th><code>stat_id</code></th><td><code>itemstatcost.txt</code></td><td>Find the exact <code>Stat</code> key. The reference row for <code>item_magicbonus</code> is indexed 80. Check the compiled row identity; the <code>*ID</code> label is only a comment.</td></tr>
       <tr><th><code>monster_aura.skill_id</code></th><td><code>skills.txt</code></td><td>Find the exact <code>skill</code> key. The reference row for <code>Conviction</code> is indexed 123. Its <code>*Id</code> is an annotation, not an editable ID assignment.</td></tr>
       <tr><th><code>treasure_class</code></th><td><code>treasureclassex.txt</code></td><td>The exact <code>Treasure Class</code> name. Check its Item/Prob entries and their referenced item codes or child TC names.</td></tr>
@@ -390,12 +478,12 @@ trigger = "all_monsters"</code></pre></div>
       <h3 id="first-run-check">Check the complete setup and repeat a map</h3>
       <ol class="prose-list"><li><strong>Make the data effective.</strong> Save the updated TXT and both layouts in your mod’s active data tree. For a loose TXT workflow, regenerate compiled data through your normal <code>-mod &lt;mod-name&gt; -txt</code> launch flow. A packaged or precompiled workflow must include the regenerated data in the package actually loaded.</li><li><strong>Restart with the intended runtime TOML.</strong> The DLL update does not replace an existing config. A fresh game is convenient for the first check. For a later craft in the same game, collect needed items and corpses and leave every Level of the old group before replacing it.</li><li><strong>Try the plain recipe.</strong> Put exactly one Town Portal scroll in the Cube. Transmute in a location allowed by the game’s portal rules, enter the portal and open the automap. The first example should show <code>tier1</code> and <code>Monster Density: 100%</code>.</li></ol>
       <p>For TCP/IP, distribute the same updated data, DLL and runtime TOML to each participant before restarting. A successful TOML parse establishes configuration acceptance; it does not check whether your game loaded the intended CubeMain and layouts.</p>
-      <details id="build-from-source" class="reference-detail"><summary>Building from source</summary><div class="details-body"><p>From the plugin source root, use CMake 3.28+, Visual Studio 2022 with C++20/x64, Git, and a compatible PluginSDK. Replace <code>&lt;sdk-root&gt;</code> with your SDK directory.</p><div class="code-block"><div class="code-header"><span>PowerShell · developer setup</span><button type="button" data-copy>Copy</button></div><pre><code id="build-commands">cmake -S . -B out-reset -G "Visual Studio 17 2022" -A x64 -DD2RL_PLUGIN_SDK_DIR="&lt;sdk-root&gt;"
-cmake --build out-reset --config Release --parallel</code></pre></div><p>The regeneration build outputs are <code>out-reset/bin/NativeMapping.dll</code> and <code>out-reset/package/</code>. Building does not install the package. Copied <code>out</code>, <code>out-up</code> or <code>out-compat-1308</code> folders can contain older artifacts; do not use them as the new DLL.</p></div></details>
+      <details id="build-from-source" class="reference-detail"><summary>Building from source</summary><div class="details-body"><p>From the plugin source root, use CMake 3.28+, Visual Studio 2022 with C++20/x64, Git, and a compatible PluginSDK. Replace <code>&lt;sdk-root&gt;</code> with your SDK directory.</p><div class="code-block"><div class="code-header"><span>PowerShell · developer setup</span><button type="button" data-copy>Copy</button></div><pre><code id="build-commands">cmake -S . -B out -G "Visual Studio 17 2022" -A x64 -DD2RL_PLUGIN_SDK_DIR="&lt;sdk-root&gt;"
+cmake --build out --config Release --parallel</code></pre></div><p>These commands produce <code>out/bin/NativeMapping.dll</code> and <code>out/package/</code> from the current source. Building does not install the package. Use the outputs of the completed build; copied output folders can contain older artifacts.</p></div></details>
     </section>
 
     <section id="first-map" class="chapter" aria-labelledby="first-map-title">
-      <div class="chapter-heading"><span class="chapter-number">10</span><div><h2 id="first-map-title">One recipe. One group. One entrance.</h2></div></div>
+      <div class="chapter-heading"><span class="chapter-number">11</span><div><h2 id="first-map-title">One recipe. One group. One entrance.</h2></div></div>
       <p>Create the <a href="#cubemain-setup">plain-scroll CubeMain row</a> with its exact <code>tsc</code> input and <code>Red Portal</code> output. The TOML below connects that matched recipe to Level 2 at the original density, with no traits or stat bonuses.</p>
       <p class="callout"><strong>Before using an example:</strong> confirm the item codes, Level IDs, stat IDs, and skill IDs in your effective mod data. These are teaching configurations, not the plugin's shipped defaults. TOML does not create their required TXT rows.</p>
       <div class="first-map-layout">
@@ -436,14 +524,14 @@ trait_pool = []</code></pre></div>
     </section>
 
     <section id="examples" class="chapter" aria-labelledby="examples-title">
-      <div class="chapter-heading"><span class="chapter-number">11</span><div><h2 id="examples-title">Complete configurations, explained.</h2></div></div>
+      <div class="chapter-heading"><span class="chapter-number">12</span><div><h2 id="examples-title">Complete configurations, explained.</h2></div></div>
       <p>Each download is a separate complete TOML file. Use one as a starting point; do not concatenate them. Create the matching CubeMain recipes and required data first. These files illustrate configuration rules, not a ready-to-install mod.</p>
 <div id="worked-examples" class="guide-directory"><h2>See how the features work together.</h2><p>Each example combines the features described above. It includes a complete TOML file, required TXT definitions, an explanation of the configuration and the resulting map behavior.</p><div class="guide-grid"><a href="./guides/multi-level.html"><span class="example-number">01</span><div><h3>A connected dungeon</h3><p>One entrance, five Levels, one map result. A recraft that touches this group replaces all five Levels after the area is clear.</p><span class="guide-link">Read the example →</span></div></a><a href="./guides/shared-tiers.html"><span class="example-number">02</span><div><h3>One pool, several tiers</h3><p>Let three item recipes select different rule sets over the same places. Recrafting overlapping Levels replaces the old tier map after everyone leaves.</p><span class="guide-link">Read the example →</span></div></a><a href="./guides/risk-reward.html"><span class="example-number">03</span><div><h3>Paired risk and reward</h3><p>Every roll should carry its own compensation: faster monsters with Magic Find, or physical resistance with experience. Bundle the pair into one trait.</p><span class="guide-link">Read the example →</span></div></a><a href="./guides/player-loadouts.html"><span class="example-number">04</span><div><h3>Recipe-selected loadouts</h3><p>Offer melee, caster and finder expeditions from one tier. The recipe makes the choice explicitly, and the resulting map carries that package.</p><span class="guide-link">Read the example →</span></div></a><a href="./guides/elemental-trial.html"><span class="example-number">05</span><div><h3>An elemental trial</h3><p>Trade reduced player resistances for a fixed Magic Find bonus. Keep all four resistance penalties equal while drawing a new value for each new map.</p><span class="guide-link">Read the example →</span></div></a><a href="./guides/aura-contract.html"><span class="example-number">06</span><div><h3>A paid aura contract</h3><p>A plain recipe rolls two traits. A second recipe consumes two matching runes and adds Conviction without taking away either random slot.</p><span class="guide-link">Read the example →</span></div></a><a href="./guides/modifier-order.html"><span class="example-number">07</span><div><h3>Reusable recipe options</h3><p>Reuse a combat pool and a reward extension. Applying them in a different order changes which traits the player can receive.</p><span class="guide-link">Read the example →</span></div></a><a href="./guides/endgame-loop.html"><span class="example-number">08</span><div><h3>A complete progression loop</h3><p>Combine entry items, disjoint destinations, escalating baselines, paired traits and next-tier drops. This is a complete TOML design with an explicit game-data contract.</p><span class="guide-link">Read the example →</span></div></a></div></div>
-<details class="reference-detail"><summary>Smaller examples for individual settings</summary><div class="details-body"><ul class="prose-list"><li><a href="./examples/first-map.toml" download>first-map.toml</a> — the minimum working route.</li><li><a href="./examples/weighted-maps.toml" download>weighted-maps.toml</a> — separate group and entrance weights.</li><li><a href="./examples/recipe-modifiers.toml" download>recipe-modifiers.toml</a> — ordinary, forced-aura and replacement-pool routes.</li><li><a href="./examples/tier-progression.toml" download>tier-progression.toml</a> — the minimum three-tier TC connection.</li></ul></div></details>
+<details class="reference-detail"><summary>Smaller examples for individual settings</summary><div class="details-body"><ul class="prose-list"><li><a href="./examples/first-map.toml" download>first-map.toml</a> — the minimum working route.</li><li><a href="./examples/map-monsters.toml" download>map-monsters.toml</a> — Level 39 with zombie pools and Frozenstein at 100%; <a href="#monsters">configuration and spawn rules</a>.</li><li><a href="./examples/weighted-maps.toml" download>weighted-maps.toml</a> — separate group and entrance weights.</li><li><a href="./examples/recipe-modifiers.toml" download>recipe-modifiers.toml</a> — ordinary, forced-aura and replacement-pool routes.</li><li><a href="./examples/tier-progression.toml" download>tier-progression.toml</a> — the minimum three-tier TC connection.</li></ul></div></details>
     </section>
 
     <section id="reference" class="chapter" aria-labelledby="reference-title">
-      <div class="chapter-heading"><span class="chapter-number">12</span><div><h2 id="reference-title">Field reference.</h2></div></div>
+      <div class="chapter-heading"><span class="chapter-number">13</span><div><h2 id="reference-title">Field reference.</h2></div></div>
       <p>Names are configuration identifiers, not file paths. Numeric IDs refer to effective mod data. Integer ranges use <code>{ min, max, step }</code>: step must be positive, min must not exceed max, and the interval must divide evenly by step.</p>
       <div class="table-scroll"><table class="reference-table"><thead><tr><th>Location / fields</th><th>Default and accepted values</th></tr></thead><tbody>
         <tr><th>Root</th><td><code>config_version = 1</code>; <code>enabled = true</code>; <code>random_salt = "native-mapping"</code> (1–256 bytes). The salt influences map-result selection, not the retained game/Act terrain seed or item generation seeds.</td></tr>
@@ -453,6 +541,11 @@ trait_pool = []</code></pre></div>
         <tr><th><code>groups.&lt;id&gt;</code></th><td><code>levels</code>: unique IDs, 0–255, non-empty. <code>entrances</code>: non-empty <code>{ level, weight }</code> entries, unique and inside levels. The numeric range alone does not establish a usable destination.</td></tr>
         <tr><th>Group / entrance <code>weight</code></th><td>Positive unsigned 32-bit integer, default 1. Relative to all candidates in that group-selection or entrance-selection pool; prior map use does not remove candidates.</td></tr>
         <tr><th>Group <code>density</code></th><td>Positive signed 64-bit integer or range; default 100. A percentage of original density. The parser has no 1000% ceiling; the native population path caps the resulting MonDen at 10,000.</td></tr>
+        <tr><th><code>groups.&lt;id&gt;.monsters.&lt;level&gt;</code></th><td>Optional per-Level policy. The Level must be in this group’s <code>levels</code>. Omitted pool fields inherit the original data; different tiers/groups can define different policies.</td></tr>
+        <tr><th>Monster <code>mon</code>, <code>nmon</code>, <code>umon</code></th><td>Whole-pool arrays, at most 25 entries; clear unused tails. Alternatively use numbered keys 1–25 for individual slots. Do not mix both forms for one pool. Values are MonStats <code>Id</code> strings or valid compiled indices 0–32767; <code>""</code> or <code>-1</code> clears a slot. The first empty slot ends the native pool. See <a href="#monster-pools">difficulty semantics</a>.</td></tr>
+        <tr><th>Monster <code>nummon</code></th><td>Optional integer, 0–255; native selection cap 13 types. Omission inherits the Level value. This is a type count, independent of density.</td></tr>
+        <tr><th>Monster <code>superunique</code></th><td>Optional <code>{ name, chance }</code>. Name must resolve to a SuperUniques <code>Superunique</code> key. Omission disables the additional spawn; pool overrides are not required.</td></tr>
+        <tr><th><code>superunique.chance</code></th><td>Percent, 0.0000001–100 inclusive; default 100. Up to seven decimal places, no exponent notation or zero. One decision and at most one boss per configured Level and generation. See <a href="#superunique-spawn">placement and regeneration</a>.</td></tr>
         <tr><th>Group effect fields</th><td><code>base_stats</code> allows fixed or ranged values. <code>forced_traits</code> is a list of distinct existing trait IDs that are selected first. <code>trait_pool</code> supplies the remaining random candidates. <code>trait_count</code> overrides the tier when present and counts forced plus random traits together.</td></tr>
         <tr><th><code>traits.&lt;id&gt;</code></th><td><code>weight</code> defaults to 1 and is positive. <code>text</code> defaults to the trait ID. Requires <code>stats</code>, <code>monster_aura</code>, or both.</td></tr>
         <tr><th>A stat entry</th><td><code>stat_id</code>: required, 0–65535. <code>stat</code>: optional name. <code>layer</code>: 0–65535, default 0. <code>target</code>: player or monster, default player. <code>value</code>: signed 32-bit integer or range, default 0; native encoding limits also apply.</td></tr>
