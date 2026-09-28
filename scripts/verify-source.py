@@ -125,7 +125,7 @@ def main() -> None:
         output = run([str(executable), str(excerpt), str(context)], capture=True).strip()
         print(f"PASS {identity}: {output}")
         results.append({"example": identity, "kind": "excerpt", "context": attrs["data-context"], "result": output})
-    require(len(results) == 21, "Expected thirteen complete examples and eight excerpts")
+    require(len(results) == 24, "Expected sixteen complete examples and eight excerpts")
     for mode, filename in HUD_FILES.items():
         variant = mode.removeprefix("controller-")
         node = json.loads((source / HUD_ROOT / filename).read_text(encoding="utf-8"))

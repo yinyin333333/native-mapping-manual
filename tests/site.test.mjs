@@ -52,7 +52,7 @@ test('preview serves both root and project-subpath URLs, but not maintenance out
 
 test('all worked examples have complete downloads and valid local links', async () => {
   const files = (await readdir(path.join(siteRoot, 'guides'))).filter(name => name.endsWith('.html'));
-  assert.equal(files.length, 8);
+  assert.equal(files.length, 11);
   for (const file of files) {
     const filename = path.join(siteRoot, 'guides', file);
     const page = await readFile(filename, 'utf8');

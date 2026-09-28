@@ -1,0 +1,1528 @@
+# Complete example: 25 map groups and 83 player / monster traits.
+# Requires an exact isc -> Red Portal CubeMain recipe.
+# Native Mapping configuration
+# Restart the game after saving changes.
+
+config_version = 1
+enabled = true
+random_salt = "native-mapping"
+
+# On-screen map information.
+[hud]
+enabled = true
+density_text = "Monster Density: {value}%"
+overflow_text = "+{value} more"
+max_lines = 16
+
+# Map modifiers. Higher weight makes a modifier more likely to be selected.
+[traits.monster_attack_speed]
+weight = 100
+text = "Monster Attack Speed {signed0}%"
+stats = [
+  { stat = "attackrate", stat_id = 68, value = { min = 10, max = 30, step = 5 }, target = "monster", roll_group = "speed" },
+  { stat = "other_animrate", stat_id = 69, value = { min = 10, max = 30, step = 5 }, target = "monster", roll_group = "speed" }
+]
+
+[traits.monster_move_speed]
+weight = 100
+text = "Monster Walk/Run Speed {signed}%"
+stats = [
+  { stat = "velocitypercent", stat_id = 67, value = { min = 10, max = 30, step = 5 }, target = "monster" }
+]
+
+[traits.monster_cast_speed]
+weight = 100
+text = "Monster Cast Speed {signed}%"
+stats = [
+  { stat = "item_fastercastrate", stat_id = 105, value = { min = 10, max = 30, step = 5 }, target = "monster" }
+]
+
+[traits.monster_conviction]
+weight = 100
+text = "Monster Aura: Conviction Lv.{value0}"
+monster_aura = { skill = "conviction", skill_id = 123, level = 10 }
+
+[traits.player_magic_find]
+weight = 100
+text = "Player Magic Find {signed}%"
+stats = [
+  { stat = "item_magicbonus", stat_id = 80, value = { min = 25, max = 150, step = 25 }, target = "player" }
+]
+
+[traits.player_attack_speed]
+weight = 100
+text = "Player Attack Speed {signed}%"
+stats = [
+  { stat = "item_fasterattackrate", stat_id = 93, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_move_speed]
+weight = 100
+text = "Player Walk/Run Speed {signed}%"
+stats = [
+  { stat = "item_fastermovevelocity", stat_id = 96, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_cast_speed]
+weight = 100
+text = "Player Cast Speed {signed}%"
+stats = [
+  { stat = "item_fastercastrate", stat_id = 105, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_all_resistance]
+weight = 100
+text = "Player All Resistances {signed0}%"
+stats = [
+  { stat = "fireresist", stat_id = 39, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" },
+  { stat = "lightresist", stat_id = 41, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" },
+  { stat = "coldresist", stat_id = 43, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" },
+  { stat = "poisonresist", stat_id = 45, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" }
+]
+
+[traits.monster_all_resistance]
+weight = 100
+text = "Monster All Resistances {signed0}%"
+stats = [
+  { stat = "fireresist", stat_id = 39, value = { min = 10, max = 30, step = 5 }, target = "monster", roll_group = "all_res" },
+  { stat = "lightresist", stat_id = 41, value = { min = 10, max = 30, step = 5 }, target = "monster", roll_group = "all_res" },
+  { stat = "coldresist", stat_id = 43, value = { min = 10, max = 30, step = 5 }, target = "monster", roll_group = "all_res" },
+  { stat = "poisonresist", stat_id = 45, value = { min = 10, max = 30, step = 5 }, target = "monster", roll_group = "all_res" }
+]
+
+[traits.player_physical_resistance]
+weight = 100
+text = "Player Physical Resistance {signed}%"
+stats = [
+  { stat = "damageresist", stat_id = 36, value = { min = 5, max = 20, step = 5 }, target = "player" }
+]
+
+[traits.player_experience]
+weight = 100
+text = "Player Experience Gain {signed}%"
+stats = [
+  { stat = "item_addexperience", stat_id = 85, value = { min = 10, max = 50, step = 10 }, target = "player" }
+]
+
+[traits.monster_damage]
+weight = 100
+text = "Monster Damage {signed}%"
+stats = [
+  { stat = "damagepercent", stat_id = 25, value = { min = 20, max = 50, step = 10 }, target = "monster" }
+]
+
+[traits.monster_attack_rating]
+weight = 100
+text = "Monster Attack Rating {signed}%"
+stats = [
+  { stat = "item_tohit_percent", stat_id = 119, value = { min = 20, max = 50, step = 10 }, target = "monster" }
+]
+
+[traits.monster_defense]
+weight = 100
+text = "Monster Defense {signed}%"
+stats = [
+  { stat = "item_armor_percent", stat_id = 16, value = { min = 20, max = 50, step = 10 }, target = "monster" }
+]
+
+[traits.monster_hit_recovery]
+weight = 100
+text = "Monster Hit Recovery {signed}%"
+stats = [
+  { stat = "item_fastergethitrate", stat_id = 99, value = { min = 10, max = 30, step = 5 }, target = "monster" }
+]
+
+[traits.monster_magic_resistance]
+weight = 100
+text = "Monster Magic Resistance {signed}%"
+stats = [
+  { stat = "magicresist", stat_id = 37, value = { min = 5, max = 20, step = 5 }, target = "monster" }
+]
+
+[traits.player_damage]
+weight = 100
+text = "Player Damage {signed}%"
+stats = [
+  { stat = "damagepercent", stat_id = 25, value = { min = 20, max = 50, step = 10 }, target = "player" }
+]
+
+[traits.player_attack_rating]
+weight = 100
+text = "Player Attack Rating {signed}%"
+stats = [
+  { stat = "item_tohit_percent", stat_id = 119, value = { min = 20, max = 50, step = 10 }, target = "player" }
+]
+
+[traits.player_defense]
+weight = 100
+text = "Player Defense {signed}%"
+stats = [
+  { stat = "item_armor_percent", stat_id = 16, value = { min = 20, max = 50, step = 10 }, target = "player" }
+]
+
+[traits.player_hit_recovery]
+weight = 100
+text = "Player Hit Recovery {signed}%"
+stats = [
+  { stat = "item_fastergethitrate", stat_id = 99, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_magic_resistance]
+weight = 100
+text = "Player Magic Resistance {signed}%"
+stats = [
+  { stat = "magicresist", stat_id = 37, value = { min = 5, max = 20, step = 5 }, target = "player" }
+]
+
+[traits.monster_physical_resistance]
+weight = 100
+text = "Monster Physical Resistance {signed}%"
+stats = [
+  { stat = "damageresist", stat_id = 36, value = { min = 5, max = 20, step = 5 }, target = "monster" }
+]
+
+[traits.player_block_speed]
+weight = 100
+text = "Player Block Speed {signed}%"
+stats = [
+  { stat = "item_fasterblockrate", stat_id = 102, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_maximum_life]
+weight = 100
+text = "Player Maximum Life {signed}%"
+stats = [
+  { stat = "item_maxhp_percent", stat_id = 76, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_maximum_mana]
+weight = 100
+text = "Player Maximum Mana {signed}%"
+stats = [
+  { stat = "item_maxmana_percent", stat_id = 77, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_mana_regeneration]
+weight = 100
+text = "Player Mana Regeneration {signed}%"
+stats = [
+  { stat = "manarecoverybonus", stat_id = 27, value = { min = 25, max = 75, step = 25 }, target = "player" }
+]
+
+[traits.player_life_replenish]
+weight = 100
+text = "Player Replenish Life {signed}"
+stats = [
+  { stat = "hpregen", stat_id = 74, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_life_steal]
+weight = 100
+text = "Player Life Stolen per Hit {signed}%"
+stats = [
+  { stat = "lifedrainmindam", stat_id = 60, value = { min = 3, max = 7, step = 1 }, target = "player" }
+]
+
+[traits.player_mana_steal]
+weight = 100
+text = "Player Mana Stolen per Hit {signed}%"
+stats = [
+  { stat = "manadrainmindam", stat_id = 62, value = { min = 3, max = 7, step = 1 }, target = "player" }
+]
+
+[traits.player_life_after_kill]
+weight = 100
+text = "Player Life after Kill {signed}"
+stats = [
+  { stat = "item_healafterkill", stat_id = 86, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_mana_after_kill]
+weight = 100
+text = "Player Mana after Kill {signed}"
+stats = [
+  { stat = "item_manaafterkill", stat_id = 138, value = { min = 3, max = 9, step = 3 }, target = "player" }
+]
+
+[traits.player_gold_find]
+weight = 100
+text = "Player Extra Gold {signed}%"
+stats = [
+  { stat = "item_goldbonus", stat_id = 79, value = { min = 50, max = 150, step = 25 }, target = "player" }
+]
+
+[traits.player_all_skills]
+weight = 100
+text = "Player All Skills {signed}"
+stats = [
+  { stat = "item_allskills", stat_id = 127, value = { min = 1, max = 2, step = 1 }, target = "player" }
+]
+
+[traits.player_crushing_blow]
+weight = 100
+text = "Player Crushing Blow Chance {signed}%"
+stats = [
+  { stat = "item_crushingblow", stat_id = 136, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_deadly_strike]
+weight = 100
+text = "Player Deadly Strike Chance {signed}%"
+stats = [
+  { stat = "item_deadlystrike", stat_id = 141, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_open_wounds]
+weight = 100
+text = "Player Open Wounds Chance {signed}%"
+stats = [
+  { stat = "item_openwounds", stat_id = 135, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_cannot_be_frozen]
+weight = 100
+text = "Player Cannot Be Frozen"
+stats = [
+  { stat = "item_cannotbefrozen", stat_id = 153, value = 1, target = "player" }
+]
+
+[traits.player_maximum_resistance]
+weight = 100
+text = "Player Maximum All Resistances {signed0}%"
+stats = [
+  { stat = "maxfireresist", stat_id = 40, value = { min = 1, max = 3, step = 1 }, target = "player", roll_group = "max_res" },
+  { stat = "maxlightresist", stat_id = 42, value = { min = 1, max = 3, step = 1 }, target = "player", roll_group = "max_res" },
+  { stat = "maxcoldresist", stat_id = 44, value = { min = 1, max = 3, step = 1 }, target = "player", roll_group = "max_res" },
+  { stat = "maxpoisonresist", stat_id = 46, value = { min = 1, max = 3, step = 1 }, target = "player", roll_group = "max_res" }
+]
+
+[traits.player_fire_skill_damage]
+weight = 100
+text = "Player Fire Skill Damage {signed}%"
+stats = [
+  { stat = "passive_fire_mastery", stat_id = 329, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_fire_pierce]
+weight = 100
+text = "Player Enemy Fire Resistance -{value}%"
+stats = [
+  { stat = "passive_fire_pierce", stat_id = 333, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_lightning_skill_damage]
+weight = 100
+text = "Player Lightning Skill Damage {signed}%"
+stats = [
+  { stat = "passive_ltng_mastery", stat_id = 330, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_lightning_pierce]
+weight = 100
+text = "Player Enemy Lightning Resistance -{value}%"
+stats = [
+  { stat = "passive_ltng_pierce", stat_id = 334, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_cold_skill_damage]
+weight = 100
+text = "Player Cold Skill Damage {signed}%"
+stats = [
+  { stat = "passive_cold_mastery", stat_id = 331, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_cold_pierce]
+weight = 100
+text = "Player Enemy Cold Resistance -{value}%"
+stats = [
+  { stat = "passive_cold_pierce", stat_id = 335, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_poison_skill_damage]
+weight = 100
+text = "Player Poison Skill Damage {signed}%"
+stats = [
+  { stat = "passive_pois_mastery", stat_id = 332, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_poison_pierce]
+weight = 100
+text = "Player Enemy Poison Resistance -{value}%"
+stats = [
+  { stat = "passive_pois_pierce", stat_id = 336, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_magic_skill_damage]
+weight = 100
+text = "Player Magic Skill Damage {signed}%"
+stats = [
+  { stat = "passive_mag_mastery", stat_id = 357, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_magic_pierce]
+weight = 100
+text = "Player Enemy Magic Resistance -{value}%"
+stats = [
+  { stat = "passive_mag_pierce", stat_id = 358, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.player_physical_pierce]
+weight = 100
+text = "Player Enemy Physical Resistance -{value}%"
+stats = [
+  { stat = "passive_dmg_pierce", stat_id = 366, value = { min = 5, max = 15, step = 5 }, target = "player" }
+]
+
+[traits.monster_maximum_life]
+weight = 100
+text = "Monster Maximum Life {signed}%"
+stats = [
+  { stat = "item_maxhp_percent", stat_id = 76, value = { min = 10, max = 30, step = 5 }, target = "monster" }
+]
+
+[traits.monster_life_replenish]
+weight = 100
+text = "Monster Replenish Life {signed}"
+stats = [
+  { stat = "hpregen", stat_id = 74, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_life_steal]
+weight = 100
+text = "Monster Life Stolen per Hit {signed}%"
+stats = [
+  { stat = "lifedrainmindam", stat_id = 60, value = { min = 3, max = 7, step = 1 }, target = "monster" }
+]
+
+[traits.monster_crushing_blow]
+weight = 100
+text = "Monster Crushing Blow Chance {signed}%"
+stats = [
+  { stat = "item_crushingblow", stat_id = 136, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_deadly_strike]
+weight = 100
+text = "Monster Deadly Strike Chance {signed}%"
+stats = [
+  { stat = "item_deadlystrike", stat_id = 141, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_open_wounds]
+weight = 100
+text = "Monster Open Wounds Chance {signed}%"
+stats = [
+  { stat = "item_openwounds", stat_id = 135, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_cannot_be_frozen]
+weight = 100
+text = "Monster Cannot Be Frozen"
+stats = [
+  { stat = "item_cannotbefrozen", stat_id = 153, value = 1, target = "monster" }
+]
+
+[traits.monster_physical_pierce]
+weight = 100
+text = "Monster Enemy Physical Resistance -{value}%"
+stats = [
+  { stat = "passive_dmg_pierce", stat_id = 366, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_fire_damage]
+weight = 100
+text = "Monster Added Fire Damage {value0}-{value1}"
+stats = [
+  { stat = "firemindam", stat_id = 48, value = { min = 10, max = 20, step = 5 }, target = "monster" },
+  { stat = "firemaxdam", stat_id = 49, value = { min = 30, max = 50, step = 10 }, target = "monster" }
+]
+
+[traits.monster_lightning_damage]
+weight = 100
+text = "Monster Added Lightning Damage {value0}-{value1}"
+stats = [
+  { stat = "lightmindam", stat_id = 50, value = { min = 1, max = 5, step = 1 }, target = "monster" },
+  { stat = "lightmaxdam", stat_id = 51, value = { min = 40, max = 80, step = 10 }, target = "monster" }
+]
+
+[traits.monster_magic_damage]
+weight = 100
+text = "Monster Added Magic Damage {value0}-{value1}"
+stats = [
+  { stat = "magicmindam", stat_id = 52, value = { min = 10, max = 20, step = 5 }, target = "monster" },
+  { stat = "magicmaxdam", stat_id = 53, value = { min = 30, max = 50, step = 10 }, target = "monster" }
+]
+
+# Adds cold damage with a base chill duration of 2 seconds.
+[traits.monster_cold_damage]
+weight = 100
+text = "Monster Added Cold Damage {value0}-{value1} (2 seconds)"
+stats = [
+  { stat = "coldmindam", stat_id = 54, value = { min = 10, max = 20, step = 5 }, target = "monster" },
+  { stat = "coldmaxdam", stat_id = 55, value = { min = 25, max = 40, step = 5 }, target = "monster" },
+  { stat = "coldlength", stat_id = 56, value = 50, target = "monster" }
+]
+
+# Adds 25-50 poison damage over 2 seconds before other modifiers.
+[traits.monster_poison_damage]
+weight = 100
+text = "Monster Added Poison Damage (2 seconds)"
+stats = [
+  { stat = "poisonmindam", stat_id = 57, value = 128, target = "monster" },
+  { stat = "poisonmaxdam", stat_id = 58, value = 256, target = "monster" },
+  { stat = "poisonlength", stat_id = 59, value = 50, target = "monster" }
+]
+
+[traits.monster_thorns]
+weight = 100
+text = "Monster Attacker Takes Damage {value}"
+stats = [
+  { stat = "item_attackertakesdamage", stat_id = 78, value = { min = 10, max = 30, step = 5 }, target = "monster" }
+]
+
+[traits.monster_lightning_thorns]
+weight = 100
+text = "Monster Attacker Takes Lightning Damage {value}"
+stats = [
+  { stat = "item_attackertakeslightdamage", stat_id = 128, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_slow_target]
+weight = 100
+text = "Monster Slows Target {value}%"
+stats = [
+  { stat = "item_slow", stat_id = 150, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_knockback]
+weight = 100
+text = "Monster Knockback"
+stats = [
+  { stat = "item_knockback", stat_id = 81, value = 1, target = "monster" }
+]
+
+[traits.monster_flat_physical_reduction]
+weight = 100
+text = "Monster Physical Damage Reduced by {value}"
+stats = [
+  { stat = "normal_damage_reduction", stat_id = 34, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_flat_magic_reduction]
+weight = 100
+text = "Monster Magic Damage Reduced by {value}"
+stats = [
+  { stat = "magic_damage_reduction", stat_id = 35, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_fire_absorb]
+weight = 100
+text = "Monster Fire Absorb {value}%"
+stats = [
+  { stat = "item_absorbfire_percent", stat_id = 142, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_lightning_absorb]
+weight = 100
+text = "Monster Lightning Absorb {value}%"
+stats = [
+  { stat = "item_absorblight_percent", stat_id = 144, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_magic_absorb]
+weight = 100
+text = "Monster Magic Absorb {value}%"
+stats = [
+  { stat = "item_absorbmagic_percent", stat_id = 146, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_cold_absorb]
+weight = 100
+text = "Monster Cold Absorb {value}%"
+stats = [
+  { stat = "item_absorbcold_percent", stat_id = 148, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_fire_skill_damage]
+weight = 100
+text = "Monster Fire Skill Damage {signed}%"
+stats = [
+  { stat = "passive_fire_mastery", stat_id = 329, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_fire_pierce]
+weight = 100
+text = "Monster Enemy Fire Resistance -{value}%"
+stats = [
+  { stat = "passive_fire_pierce", stat_id = 333, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_lightning_skill_damage]
+weight = 100
+text = "Monster Lightning Skill Damage {signed}%"
+stats = [
+  { stat = "passive_ltng_mastery", stat_id = 330, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_lightning_pierce]
+weight = 100
+text = "Monster Enemy Lightning Resistance -{value}%"
+stats = [
+  { stat = "passive_ltng_pierce", stat_id = 334, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_cold_skill_damage]
+weight = 100
+text = "Monster Cold Skill Damage {signed}%"
+stats = [
+  { stat = "passive_cold_mastery", stat_id = 331, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_cold_pierce]
+weight = 100
+text = "Monster Enemy Cold Resistance -{value}%"
+stats = [
+  { stat = "passive_cold_pierce", stat_id = 335, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_poison_skill_damage]
+weight = 100
+text = "Monster Poison Skill Damage {signed}%"
+stats = [
+  { stat = "passive_pois_mastery", stat_id = 332, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_poison_pierce]
+weight = 100
+text = "Monster Enemy Poison Resistance -{value}%"
+stats = [
+  { stat = "passive_pois_pierce", stat_id = 336, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_magic_skill_damage]
+weight = 100
+text = "Monster Magic Skill Damage {signed}%"
+stats = [
+  { stat = "passive_mag_mastery", stat_id = 357, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_magic_pierce]
+weight = 100
+text = "Monster Enemy Magic Resistance -{value}%"
+stats = [
+  { stat = "passive_mag_pierce", stat_id = 358, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+# Cube input for tier 1. Requires a matching red-portal cube recipe.
+[cube_routes.tier1_isc]
+inputs = ["isc"]
+tier = "tier1"
+
+# base_stats always apply; trait_count controls the number of random modifiers.
+[tiers.tier1]
+difficulty_rank = 1
+trait_count = { min = 1, max = 10 }
+base_stats = [
+  { stat = "item_maxhp_percent", stat_id = 76, value = 50, target = "monster", text = "Monster Maximum Life {signed}%" }
+]
+
+# Map groups. Density 100 is normal; 200 is double.
+[tiers.tier1.groups.act1_pit]
+weight = 100
+levels = [12, 16]
+entrances = [{ level = 12, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act1_forgotten_tower]
+weight = 100
+levels = [20, 21, 22, 23, 24, 25]
+entrances = [{ level = 20, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act1_jail]
+weight = 100
+levels = [29, 30, 31]
+entrances = [{ level = 29, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act1_catacombs]
+weight = 100
+levels = [34, 35, 36, 37]
+entrances = [{ level = 34, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act1_moo_moo_farm]
+weight = 100
+levels = [39]
+entrances = [{ level = 39, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act2_sewers]
+weight = 100
+levels = [47, 48, 49]
+entrances = [{ level = 47, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act2_palace_cellar]
+weight = 100
+levels = [52, 53, 54]
+entrances = [{ level = 52, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act2_halls_of_the_dead]
+weight = 100
+levels = [56, 57, 60]
+entrances = [{ level = 56, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act2_maggot_lair]
+weight = 100
+levels = [62, 63, 64]
+entrances = [{ level = 62, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act2_arcane_sanctuary]
+weight = 100
+levels = [74]
+entrances = [{ level = 74, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act3_travincal]
+weight = 100
+levels = [83]
+entrances = [{ level = 83, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act3_swampy_pit]
+weight = 100
+levels = [86, 87, 90]
+entrances = [{ level = 86, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act3_flayer_dungeon]
+weight = 100
+levels = [88, 89, 91]
+entrances = [{ level = 88, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act3_sewers]
+weight = 100
+levels = [92, 93]
+entrances = [{ level = 92, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act3_durance_of_hate]
+weight = 100
+levels = [100, 101, 102]
+entrances = [{ level = 100, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act4_river_of_flame]
+weight = 100
+levels = [107]
+entrances = [{ level = 107, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act4_chaos_sanctuary]
+weight = 100
+levels = [108]
+entrances = [{ level = 108, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_frozen_river]
+weight = 100
+levels = [114]
+entrances = [{ level = 114, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_drifter_cavern]
+weight = 100
+levels = [116]
+entrances = [{ level = 116, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_icy_cellar]
+weight = 100
+levels = [119]
+entrances = [{ level = 119, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_halls]
+weight = 100
+levels = [122, 123, 124]
+entrances = [{ level = 122, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_abaddon]
+weight = 100
+levels = [125]
+entrances = [{ level = 125, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_pit_of_acheron]
+weight = 100
+levels = [126]
+entrances = [{ level = 126, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_infernal_pit]
+weight = 100
+levels = [127]
+entrances = [{ level = 127, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]
+
+[tiers.tier1.groups.act5_worldstone_keep]
+weight = 100
+levels = [128, 129, 130, 131]
+entrances = [{ level = 128, weight = 100 }]
+density = { min = 100, max = 1000, step = 1 }
+trait_pool = [
+  "monster_attack_speed", "monster_move_speed", "monster_cast_speed",
+  "monster_conviction", "player_magic_find", "player_attack_speed", "player_move_speed",
+  "player_cast_speed", "player_all_resistance", "monster_all_resistance",
+  "player_physical_resistance", "player_experience",
+  "monster_damage", "monster_attack_rating", "monster_defense",
+  "monster_hit_recovery", "monster_magic_resistance", "player_damage",
+  "player_attack_rating", "player_defense", "player_hit_recovery",
+  "player_magic_resistance", "monster_physical_resistance", "player_block_speed",
+  "player_maximum_life", "player_maximum_mana", "player_mana_regeneration",
+  "player_life_replenish", "player_life_steal", "player_mana_steal",
+  "player_life_after_kill", "player_mana_after_kill", "player_gold_find",
+  "player_all_skills", "player_crushing_blow", "player_deadly_strike",
+  "player_open_wounds", "player_cannot_be_frozen", "player_maximum_resistance",
+  "player_fire_skill_damage", "player_fire_pierce", "player_lightning_skill_damage",
+  "player_lightning_pierce", "player_cold_skill_damage", "player_cold_pierce",
+  "player_poison_skill_damage", "player_poison_pierce", "player_magic_skill_damage",
+  "player_magic_pierce", "player_physical_pierce", "monster_maximum_life",
+  "monster_life_replenish", "monster_life_steal", "monster_crushing_blow",
+  "monster_deadly_strike", "monster_open_wounds", "monster_cannot_be_frozen",
+  "monster_physical_pierce", "monster_fire_damage", "monster_lightning_damage",
+  "monster_magic_damage", "monster_cold_damage", "monster_poison_damage",
+  "monster_thorns", "monster_lightning_thorns", "monster_slow_target",
+  "monster_knockback", "monster_flat_physical_reduction", "monster_flat_magic_reduction",
+  "monster_fire_absorb", "monster_lightning_absorb", "monster_magic_absorb",
+  "monster_cold_absorb", "monster_fire_skill_damage", "monster_fire_pierce",
+  "monster_lightning_skill_damage", "monster_lightning_pierce", "monster_cold_skill_damage",
+  "monster_cold_pierce", "monster_poison_skill_damage", "monster_poison_pierce",
+  "monster_magic_skill_damage", "monster_magic_pierce"
+]

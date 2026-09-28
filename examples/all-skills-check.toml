@@ -1,0 +1,32 @@
+# Complete example. Requires an exact isc -> Red Portal CubeMain recipe.
+# Use the Level IDs and stat IDs from your effective mod data.
+config_version = 1
+enabled = true
+random_salt = "native-mapping"
+
+[hud]
+enabled = true
+density_text = "Monster Density: {value}%"
+overflow_text = "+{value} more"
+max_lines = 16
+
+[traits.player_all_skills]
+weight = 100
+text = "Player All Skills {signed}"
+stats = [
+  { stat = "item_allskills", stat_id = 127, value = { min = 1, max = 2, step = 1 }, target = "player" }
+]
+
+[cube_routes.identify_scroll]
+inputs = ["isc"]
+tier = "tier1"
+
+[tiers.tier1]
+trait_count = { min = 1, max = 1 }
+
+[tiers.tier1.groups.field]
+weight = 100
+levels = [2]
+entrances = [{ level = 2, weight = 100 }]
+density = 100
+trait_pool = ["player_all_skills"]

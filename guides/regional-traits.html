@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff"><meta name="description" content="Five destinations share one tier, but each offers a different set of player bonuses and monster challenges."><title>Give each region its own traits — Native Mapping</title><link rel="icon" href="../assets/favicon.svg"><link rel="stylesheet" href="../assets/style.css"><script defer src="../assets/app.js"></script></head>
+<body class="task-page"><a class="skip-link" href="#main">Skip to content</a>
+<aside class="sidebar"><a class="brand" href="../index.html" aria-label="Native Mapping manual home">
+    <span>Native Mapping</span>
+  </a><nav class="contents" aria-label="Worked examples"><a href="../index.html#examples">← All examples</a><p class="nav-label">Complete configurations</p><a href="./multi-level.html"><span>01</span>A connected dungeon</a><a href="./shared-tiers.html"><span>02</span>One pool, several tiers</a><a href="./risk-reward.html"><span>03</span>Paired risk and reward</a><a href="./player-loadouts.html"><span>04</span>Recipe-selected loadouts</a><a href="./elemental-trial.html"><span>05</span>An elemental trial</a><a href="./aura-contract.html"><span>06</span>A paid aura contract</a><a href="./modifier-order.html"><span>07</span>Reusable recipe options</a><a href="./endgame-loop.html"><span>08</span>A complete progression loop</a><a href="./all-acts-map-pool.html"><span>09</span>25 destinations, one shared pool</a><a href="./regional-traits.html" aria-current="page"><span>10</span>Different traits by region</a><a href="./all-skills-check.html"><span>11</span>Check All Skills on its own</a><p class="nav-label">Manual</p><a href="../index.html#installation">Install &amp; configure</a><a href="../index.html#reference">Field reference</a></nav></aside>
+<div class="document"><header class="topbar"><a href="../index.html#examples">Manual / Worked examples</a><a href="../examples/regional-traits.toml" download="native-mapping.toml">Download TOML ↓</a></header>
+<main id="main">
+<section id="task-overview" class="chapter task-hero"><h1>Give each region its own traits</h1><p class="lead">Five destinations share one tier, but each offers a different set of player bonuses and monster challenges.</p><nav class="task-jumps" aria-label="On this page"><a href="#prepare">1. Prepare data</a><a href="#configure">2. Configure</a><a href="#result">3. Use the map</a><a href="#adapt">4. Adapt it</a></nav></section>
+<section id="prepare" class="chapter"><h2>What to create or confirm</h2><p>Use the Pit, Arcane Sanctuary, Travincal, Chaos Sanctuary and Worldstone Keep groups from the larger example. Their original monsters remain in place. This file changes density and traits, without replacing monster pools.</p><p>These examples use one Identify Scroll (<code>isc</code>). Create an exact <code>isc</code> → <code>Red Portal</code> CubeMain recipe: follow the <a href="../index.html#cubemain-setup">plain-scroll recipe instructions</a>, replacing its <code>tsc</code> input with <code>isc</code>. The TOML route alone does not create this recipe. Confirm IDs against your effective mod data using the <a href="../index.html#find-data-ids">ID lookup guide</a>.</p></section>
+<section id="configure" class="chapter"><h2>The decisions in this configuration</h2><p>The five weights add up to 500. Each map draws exactly two distinct traits from its own three-entry pool. All traits have equal weight; being defined in <code>traits</code> does not make a trait available to every group.</p><div class="table-scroll"><table><thead><tr><th>Group</th><th>Selection chance</th><th>Density</th><th>Its three trait candidates</th></tr></thead><tbody><tr><th><code>act1_pit</code></th><td>40%</td><td>150%</td><td><code>player_magic_find</code><br><code>player_gold_find</code><br><code>monster_move_speed</code></td></tr><tr><th><code>act2_arcane_sanctuary</code></th><td>20%</td><td>125%</td><td><code>player_all_skills</code><br><code>player_maximum_mana</code><br><code>player_mana_regeneration</code></td></tr><tr><th><code>act3_travincal</code></th><td>20%</td><td>175%</td><td><code>player_experience</code><br><code>monster_damage</code><br><code>monster_maximum_life</code></td></tr><tr><th><code>act4_chaos_sanctuary</code></th><td>10%</td><td>150%</td><td><code>player_all_resistance</code><br><code>monster_fire_damage</code><br><code>monster_fire_pierce</code></td></tr><tr><th><code>act5_worldstone_keep</code></th><td>10%</td><td>200%</td><td><code>player_all_skills</code><br><code>monster_life_replenish</code><br><code>monster_conviction</code></td></tr></tbody></table></div><p>All five groups retain the fixed Monster Maximum Life +50% tier rule. The Arcane Sanctuary pool contains only player bonuses: All Skills, maximum mana and mana regeneration. The other pools mix rewards and challenges. Worldstone Keep covers Levels 128–131 with its entrance at 128.</p><details id="complete-config" class="reference-detail" open><summary>Complete configuration · regional-traits.toml</summary><div class="details-body"><div class="code-block"><div class="code-header"><span>Replace the runtime file with this complete example</span><div><a href="../examples/regional-traits.toml" download="native-mapping.toml">Download</a><button type="button" data-copy>Copy</button></div></div><pre><code id="task-config" data-language="toml" data-kind="complete" data-file="examples/regional-traits.toml"># Complete example. Requires an exact isc -&gt; Red Portal CubeMain recipe.
+# Use the Level IDs and stat IDs from your effective mod data.
+config_version = 1
+enabled = true
+random_salt = &quot;native-mapping&quot;
+
+[hud]
+enabled = true
+density_text = &quot;Monster Density: {value}%&quot;
+overflow_text = &quot;+{value} more&quot;
+max_lines = 16
+
+[traits.player_magic_find]
+weight = 100
+text = &quot;Player Magic Find {signed}%&quot;
+stats = [
+  { stat = &quot;item_magicbonus&quot;, stat_id = 80, value = { min = 25, max = 150, step = 25 }, target = &quot;player&quot; }
+]
+
+[traits.player_gold_find]
+weight = 100
+text = &quot;Player Extra Gold {signed}%&quot;
+stats = [
+  { stat = &quot;item_goldbonus&quot;, stat_id = 79, value = { min = 50, max = 150, step = 25 }, target = &quot;player&quot; }
+]
+
+[traits.monster_move_speed]
+weight = 100
+text = &quot;Monster Walk/Run Speed {signed}%&quot;
+stats = [
+  { stat = &quot;velocitypercent&quot;, stat_id = 67, value = { min = 10, max = 30, step = 5 }, target = &quot;monster&quot; }
+]
+
+[traits.player_all_skills]
+weight = 100
+text = &quot;Player All Skills {signed}&quot;
+stats = [
+  { stat = &quot;item_allskills&quot;, stat_id = 127, value = { min = 1, max = 2, step = 1 }, target = &quot;player&quot; }
+]
+
+[traits.player_maximum_mana]
+weight = 100
+text = &quot;Player Maximum Mana {signed}%&quot;
+stats = [
+  { stat = &quot;item_maxmana_percent&quot;, stat_id = 77, value = { min = 10, max = 30, step = 5 }, target = &quot;player&quot; }
+]
+
+[traits.player_mana_regeneration]
+weight = 100
+text = &quot;Player Mana Regeneration {signed}%&quot;
+stats = [
+  { stat = &quot;manarecoverybonus&quot;, stat_id = 27, value = { min = 25, max = 75, step = 25 }, target = &quot;player&quot; }
+]
+
+[traits.player_experience]
+weight = 100
+text = &quot;Player Experience Gain {signed}%&quot;
+stats = [
+  { stat = &quot;item_addexperience&quot;, stat_id = 85, value = { min = 10, max = 50, step = 10 }, target = &quot;player&quot; }
+]
+
+[traits.monster_damage]
+weight = 100
+text = &quot;Monster Damage {signed}%&quot;
+stats = [
+  { stat = &quot;damagepercent&quot;, stat_id = 25, value = { min = 20, max = 50, step = 10 }, target = &quot;monster&quot; }
+]
+
+[traits.monster_maximum_life]
+weight = 100
+text = &quot;Monster Maximum Life {signed}%&quot;
+stats = [
+  { stat = &quot;item_maxhp_percent&quot;, stat_id = 76, value = { min = 10, max = 30, step = 5 }, target = &quot;monster&quot; }
+]
+
+[traits.player_all_resistance]
+weight = 100
+text = &quot;Player All Resistances {signed0}%&quot;
+stats = [
+  { stat = &quot;fireresist&quot;, stat_id = 39, value = { min = 10, max = 30, step = 5 }, target = &quot;player&quot;, roll_group = &quot;all_res&quot; },
+  { stat = &quot;lightresist&quot;, stat_id = 41, value = { min = 10, max = 30, step = 5 }, target = &quot;player&quot;, roll_group = &quot;all_res&quot; },
+  { stat = &quot;coldresist&quot;, stat_id = 43, value = { min = 10, max = 30, step = 5 }, target = &quot;player&quot;, roll_group = &quot;all_res&quot; },
+  { stat = &quot;poisonresist&quot;, stat_id = 45, value = { min = 10, max = 30, step = 5 }, target = &quot;player&quot;, roll_group = &quot;all_res&quot; }
+]
+
+[traits.monster_fire_damage]
+weight = 100
+text = &quot;Monster Added Fire Damage {value0}-{value1}&quot;
+stats = [
+  { stat = &quot;firemindam&quot;, stat_id = 48, value = { min = 10, max = 20, step = 5 }, target = &quot;monster&quot; },
+  { stat = &quot;firemaxdam&quot;, stat_id = 49, value = { min = 30, max = 50, step = 10 }, target = &quot;monster&quot; }
+]
+
+[traits.monster_fire_pierce]
+weight = 100
+text = &quot;Monster Enemy Fire Resistance -{value}%&quot;
+stats = [
+  { stat = &quot;passive_fire_pierce&quot;, stat_id = 333, value = { min = 5, max = 15, step = 5 }, target = &quot;monster&quot; }
+]
+
+[traits.monster_life_replenish]
+weight = 100
+text = &quot;Monster Replenish Life {signed}&quot;
+stats = [
+  { stat = &quot;hpregen&quot;, stat_id = 74, value = { min = 5, max = 15, step = 5 }, target = &quot;monster&quot; }
+]
+
+[traits.monster_conviction]
+weight = 100
+text = &quot;Monster Aura: Conviction Lv.{value0}&quot;
+monster_aura = { skill = &quot;conviction&quot;, skill_id = 123, level = 10 }
+
+[cube_routes.identify_scroll]
+inputs = [&quot;isc&quot;]
+tier = &quot;tier1&quot;
+
+[tiers.tier1]
+trait_count = { min = 2, max = 2 }
+base_stats = [
+  { stat = &quot;item_maxhp_percent&quot;, stat_id = 76, value = 50, target = &quot;monster&quot;, text = &quot;Monster Maximum Life {signed}%&quot; }
+]
+
+[tiers.tier1.groups.act1_pit]
+weight = 200
+levels = [12, 16]
+entrances = [{ level = 12, weight = 100 }]
+density = 150
+trait_pool = [&quot;player_magic_find&quot;, &quot;player_gold_find&quot;, &quot;monster_move_speed&quot;]
+
+[tiers.tier1.groups.act2_arcane_sanctuary]
+weight = 100
+levels = [74]
+entrances = [{ level = 74, weight = 100 }]
+density = 125
+trait_pool = [&quot;player_all_skills&quot;, &quot;player_maximum_mana&quot;, &quot;player_mana_regeneration&quot;]
+
+[tiers.tier1.groups.act3_travincal]
+weight = 100
+levels = [83]
+entrances = [{ level = 83, weight = 100 }]
+density = 175
+trait_pool = [&quot;player_experience&quot;, &quot;monster_damage&quot;, &quot;monster_maximum_life&quot;]
+
+[tiers.tier1.groups.act4_chaos_sanctuary]
+weight = 50
+levels = [108]
+entrances = [{ level = 108, weight = 100 }]
+density = 150
+trait_pool = [&quot;player_all_resistance&quot;, &quot;monster_fire_damage&quot;, &quot;monster_fire_pierce&quot;]
+
+[tiers.tier1.groups.act5_worldstone_keep]
+weight = 50
+levels = [128, 129, 130, 131]
+entrances = [{ level = 128, weight = 100 }]
+density = 200
+trait_pool = [&quot;player_all_skills&quot;, &quot;monster_life_replenish&quot;, &quot;monster_conviction&quot;]</code></pre></div></div></details><p>Close the game, keep your current configuration if needed, and save this complete file as <code>&lt;scope&gt;/d2rloader/config/native-mapping.toml</code>. Restart the game and loader. Do not append it to another complete configuration.</p></section>
+<section id="result" class="chapter"><h2>What to check in the map</h2><p>An Arcane Sanctuary roll can give All Skills +1 and Maximum Mana +20%, or any other pair from its three candidates. It cannot draw Conviction from the Worldstone Keep pool. In Travincal, the random monster life bonus adds to the fixed tier bonus when selected.</p><p>The Worldstone Keep pool may select Conviction, but it is not guaranteed: two of its three traits are chosen. An elemental monster trait only helps a monster when its attacks or skills can use that stat.</p><p>Use the recipe, enter its portal, and open the automap. Before a later craft replaces a map, collect needed items and corpses and move all players and allies out of every affected Level. See <a href="../index.html#repeat-map">the repeat-craft procedure</a>. Configuration parsing and map rolls are checked separately from gameplay; confirm the effects in your own mod.</p></section>
+<section id="adapt" class="chapter"><h2>Change the behavior intentionally</h2><ul class="prose-list"><li><strong>Guarantee All Skills in Arcane Sanctuary:</strong> add <code>forced_traits = ["player_all_skills"]</code> to that group. With the existing count of 2, the result is All Skills plus one other trait.</li><li><strong>Guarantee all three caster bonuses:</strong> set that group’s <code>trait_count = { min = 3, max = 3 }</code>.</li><li><strong>Add a sixth destination:</strong> copy a group table, give it a unique ID, change its Levels and entrance, and choose its pool. Recalculate probabilities using the new total weight.</li><li><strong>Change only one region:</strong> edit its <code>trait_pool</code> or <code>density</code>. Editing a shared trait definition changes that trait wherever it is used.</li></ul></section>
+</main><footer><a href="../index.html#examples">← Return to the examples</a><a href="#task-overview">Back to top ↑</a></footer></div><p id="copy-status" class="copy-status" role="status" aria-live="polite"></p></body></html>

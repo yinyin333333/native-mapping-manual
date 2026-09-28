@@ -221,7 +221,7 @@ try {
     await cdp.send('Emulation.setScriptExecutionDisabled', { value: false });
   });
   await check('worked examples load with readable code and no horizontal page overflow', async () => {
-    for (const name of ['risk-reward', 'aura-contract', 'endgame-loop']) {
+    for (const name of ['risk-reward', 'aura-contract', 'endgame-loop', 'all-acts-map-pool', 'regional-traits', 'all-skills-check']) {
       for (const width of [1440, 390, 320]) {
         await viewport(width, 1000);
         await navigate(`${url}guides/${name}.html`);
@@ -236,6 +236,11 @@ try {
     await viewport(390, 844);
     await navigate(`${url}guides/aura-contract.html`);
     await screenshot('mobile-worked-example');
+    await navigate(`${url}guides/all-acts-map-pool.html`);
+    await go('configure'); await screenshot('mobile-expanded-pool');
+    await viewport(1440, 1050);
+    await navigate(`${url}guides/regional-traits.html`);
+    await go('configure'); await screenshot('desktop-regional-traits');
     await viewport(1440, 1050);
     await navigate(url);
     await go('structure');
