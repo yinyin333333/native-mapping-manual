@@ -27,8 +27,17 @@ SOURCE_FILES = (
     "mapping_core/include/mapping/config/RuntimeConfig.hpp",
     "mapping_core/src/config/RuntimeConfig.cpp", "mapping_core/src/config/RuntimeRoll.cpp",
     "mapping_core/src/config/RuntimeDisplay.cpp",
-    "data/global/ui/layouts/hudwarnings.json", "data/global/ui/layouts/hudwarningshd.json",
+    "HUD_KO.md", "plugin/src/HudLayoutFiles.hpp", "plugin/src/HudLayout.hpp",
 )
+
+HUD_FILES = {
+    "standard": "native-mapping/MappingInfoText.json",
+    "hd": "native-mapping/MappingInfoTexthd.json",
+    "controller-standard": "controller/native-mapping/MappingInfoText.json",
+    "controller-hd": "controller/native-mapping/MappingInfoTexthd.json",
+}
+HUD_ROOT = "plugin/d2rl-native-mapping.mpq/data/global/ui/layouts"
+SOURCE_FILES += tuple(f"{HUD_ROOT}/{filename}" for filename in HUD_FILES.values())
 
 
 class CodeBlocks(HTMLParser):
@@ -117,14 +126,14 @@ def main() -> None:
         print(f"PASS {identity}: {output}")
         results.append({"example": identity, "kind": "excerpt", "context": attrs["data-context"], "result": output})
     require(len(results) == 21, "Expected thirteen complete examples and eight excerpts")
-    for variant, filename in [("standard", "hudwarnings.json"), ("hd", "hudwarningshd.json")]:
-        original = json.loads((source / "data/global/ui/layouts" / filename).read_text(encoding="utf-8"))
-        node = next(child for child in original["children"] if child["name"] == "MappingInfoTextWrapper")
+    for mode, filename in HUD_FILES.items():
+        variant = mode.removeprefix("controller-")
+        node = json.loads((source / HUD_ROOT / filename).read_text(encoding="utf-8"))
         public = json.loads((ROOT / "examples" / f"hud-{variant}-node.json").read_text(encoding="utf-8"))
-        require(node == public, f"HUD {variant} download differs from source node")
+        require(node == public, f"HUD {mode} download differs from companion file")
         shown = next(text for attrs, text in document.blocks if attrs.get("id") == f"hud-{variant}-code")
         require(json.loads(shown) == public, f"HUD {variant} displayed object differs from download")
-        print(f"PASS {variant} HUD object matches source and displayed JSON")
+        print(f"PASS {mode} HUD file matches companion source and displayed JSON")
     after = source_hashes(source)
     require(before == after, "A source file changed during verification")
     report = {"source": str(source), "source_files": before, "source_unchanged": True, "parser_results": results}

@@ -245,7 +245,7 @@ try {
     await navigate(url);
     for (const width of [1440, 390, 320]) {
       await viewport(width, 1000);
-      for (const id of ['find-data-ids', 'cubemain-setup', 'hud-standard-snippet', 'hud-hd-snippet', 'stat-layers']) {
+      for (const id of ['find-data-ids', 'cubemain-setup', 'hud-setup', 'hud-standard-snippet', 'hud-hd-snippet', 'stat-layers']) {
         await go(id);
         assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `${id}: ${width}`);
       }
@@ -253,9 +253,13 @@ try {
     await viewport(1440, 1050);
     await go('cubemain-setup');
     await screenshot('desktop-cubemain-setup');
+    await go('hud-setup');
+    await screenshot('desktop-hud-setup');
     await viewport(390, 844);
     await go('hud-hd-snippet');
     await screenshot('mobile-hud-snippet');
+    await go('hud-setup');
+    await screenshot('mobile-hud-setup');
   });
   await check('syntax colors preserve all source text and distinguish JSON keys and HUD tokens', async () => {
     await navigate(url);
