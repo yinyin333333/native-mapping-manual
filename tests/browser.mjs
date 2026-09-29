@@ -171,15 +171,15 @@ try {
   });
   await until(() => evaluate('document.querySelector("#copy-status").textContent === ""'), 'copy feedback clears');
   await screenshot('desktop-first-configuration');
-  await check('developer build and reference disclosures work through keyboard and anchors', async () => {
-    await go('build-from-source');
-    assert.equal(await evaluate('document.querySelector("#build-from-source").open'), true);
-    await evaluate('document.querySelector("#build-from-source summary").focus()');
-    assert.equal(await evaluate('document.activeElement === document.querySelector("#build-from-source summary")'), true);
+  await check('HUD file disclosures work through keyboard and anchors', async () => {
+    await go('hud-standard-snippet');
+    assert.equal(await evaluate('document.querySelector("#hud-standard-snippet").open'), true);
+    await evaluate('document.querySelector("#hud-standard-snippet summary").focus()');
+    assert.equal(await evaluate('document.activeElement === document.querySelector("#hud-standard-snippet summary")'), true);
     await cdp.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', text: '\r', unmodifiedText: '\r', windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
     await cdp.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
     await settled();
-    assert.equal(await evaluate('document.querySelector("#build-from-source").open'), false);
+    assert.equal(await evaluate('document.querySelector("#hud-standard-snippet").open'), false);
 
   });
   await go('treasure-classes');
@@ -208,8 +208,8 @@ try {
     await go('superunique-chance'); await screenshot(`${label}-superunique-chance`);
   }
   await check('direct fragment loads reveal folded content', async () => {
-    await navigate(`${url}?direct-entry=1#build-commands`);
-    const state = await evaluate('({ url: location.href, ready: document.readyState, open: document.querySelector("#build-from-source").open, highlighted: document.querySelectorAll(".token-key").length })');
+    await navigate(`${url}?direct-entry=1#hud-standard-code`);
+    const state = await evaluate('({ url: location.href, ready: document.readyState, open: document.querySelector("#hud-standard-snippet").open, highlighted: document.querySelectorAll(".token-key").length })');
     assert.equal(state.open, true, JSON.stringify(state));
   });
   await check('the full manual and download remain available without JavaScript', async () => {
@@ -289,7 +289,7 @@ try {
   await check('revised diagrams and template examples fit desktop and mobile', async () => {
     for (const width of [1440, 390, 320]) {
       await viewport(width, 1050);
-      for (const id of ['level-membership', 'reuse-comparison', 'trait-allocation', 'density-comparison', 'stat-addition', 'drop-sequence', 'tc-choice', 'hud-token-examples']) {
+      for (const id of ['level-membership', 'reuse-comparison', 'trait-allocation', 'density-comparison', 'stat-addition', 'drop-sequence', 'hud-token-examples']) {
         await go(id);
         assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `${id}: ${width}`);
       }
