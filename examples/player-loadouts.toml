@@ -1,0 +1,60 @@
+# Recipes choose the player bonus package; they do not detect character class.
+# Required exact Red Portal recipes: tsc; tsc+r01; tsc+r02.
+# Check Level and stat IDs in effective data.
+config_version = 1
+
+[traits.melee]
+text = "Melee: attack speed {signed0}%, movement {signed1}%"
+stats = [
+  { stat_id = 93, target = "player", value = 20 },
+  { stat_id = 96, target = "player", value = 15 }
+]
+
+[traits.caster]
+text = "Caster: cast speed {signed0}%, movement {signed1}%"
+stats = [
+  { stat_id = 105, target = "player", value = 20 },
+  { stat_id = 96, target = "player", value = 15 }
+]
+
+[traits.finder]
+text = "Finder: Magic Find {signed0}%, experience {signed1}%"
+stats = [
+  { stat_id = 80, target = "player", value = 75 },
+  { stat_id = 85, target = "player", value = 15 }
+]
+
+[modifiers.melee]
+forced_traits = ["melee"]
+[modifiers.caster]
+forced_traits = ["caster"]
+[modifiers.finder]
+forced_traits = ["finder"]
+
+[cube_routes.melee]
+inputs = ["tsc"]
+tier = "expedition"
+modifiers = ["melee"]
+[cube_routes.caster]
+inputs = ["tsc", "r01"]
+tier = "expedition"
+modifiers = ["caster"]
+[cube_routes.finder]
+inputs = ["tsc", "r02"]
+tier = "expedition"
+modifiers = ["finder"]
+
+[tiers.expedition]
+trait_count = { min = 1, max = 1 }
+
+[tiers.expedition.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 150
+trait_pool = []
+
+[tiers.expedition.groups.cave]
+levels = [8, 9]
+entrances = [{ level = 8, weight = 1 }]
+density = 150
+trait_pool = []

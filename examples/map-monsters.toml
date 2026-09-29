@@ -1,0 +1,33 @@
+# Complete learning example. Requires an exact tsc -> Red Portal CubeMain recipe.
+# Confirm Level 39, MonStats Id zombie1 and SuperUniques Superunique Frozenstein
+# against your mod's effective data. Optional tier TC rules are configured separately.
+config_version = 1
+enabled = true
+random_salt = "mapping-example"
+
+[hud]
+enabled = true
+density_text = "Monster Density: {value}%"
+overflow_text = "+{value} more"
+max_lines = 16
+
+[cube_routes.scroll_map]
+inputs = ["tsc"]
+tier = "tier1"
+
+[tiers.tier1]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier1.groups.cow_map]
+weight = 100
+levels = [39]
+entrances = [{ level = 39, weight = 100 }]
+density = 100
+trait_pool = []
+
+[tiers.tier1.groups.cow_map.monsters.39]
+nummon = 1
+mon = ["zombie1"]
+nmon = ["zombie1"]
+umon = ["zombie1"]
+superunique = { name = "Frozenstein", chance = 100 }

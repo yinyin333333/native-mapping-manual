@@ -1,0 +1,25 @@
+# One roll reduces all four player resistances by the same amount.
+# Required CubeMain recipe: exact tsc -> Red Portal.
+# Stat IDs refer to the effective ItemStatCost table.
+config_version = 1
+
+[cube_routes.trial]
+inputs = ["tsc"]
+tier = "trial"
+
+[tiers.trial]
+trait_count = { min = 0, max = 0 }
+base_stats = [
+  { stat_id = 80, target = "player", value = 100, text = "Trial Magic Find {signed}%" }
+]
+
+[tiers.trial.groups.underground]
+levels = [8, 9]
+entrances = [{ level = 8, weight = 1 }]
+density = 150
+base_stats = [
+  { stat_id = 39, target = "player", value = { min = -30, max = -10, step = 10 }, roll_group = "penalty", text = "All Resistances {signed}%" },
+  { stat_id = 41, target = "player", value = { min = -30, max = -10, step = 10 }, roll_group = "penalty" },
+  { stat_id = 43, target = "player", value = { min = -30, max = -10, step = 10 }, roll_group = "penalty" },
+  { stat_id = 45, target = "player", value = { min = -30, max = -10, step = 10 }, roll_group = "penalty" }
+]

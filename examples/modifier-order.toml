@@ -1,0 +1,38 @@
+# The same modifiers in different orders produce different candidate pools.
+# Exact Red Portal recipes: tsc+r01; tsc+r02.
+config_version = 1
+
+[traits.attack]
+text = "Player Attack Speed {signed}%"
+stats = [{ stat_id = 93, target = "player", value = 20 }]
+[traits.movement]
+text = "Player Movement {signed}%"
+stats = [{ stat_id = 96, target = "player", value = 15 }]
+[traits.find]
+text = "Player Magic Find {signed}%"
+stats = [{ stat_id = 80, target = "player", value = 75 }]
+
+[modifiers.combat]
+trait_pool_mode = "replace"
+trait_pool = ["attack", "movement"]
+[modifiers.reward]
+trait_pool_mode = "extend"
+trait_pool = ["find"]
+
+[cube_routes.mixed]
+inputs = ["tsc", "r01"]
+tier = "expedition"
+modifiers = ["combat", "reward"]
+[cube_routes.combat]
+inputs = ["tsc", "r02"]
+tier = "expedition"
+modifiers = ["reward", "combat"]
+
+[tiers.expedition]
+trait_count = { min = 2, max = 2 }
+
+[tiers.expedition.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 150
+trait_pool = []

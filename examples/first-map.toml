@@ -1,0 +1,25 @@
+# Complete learning example. Requires an exact tsc -> Red Portal CubeMain recipe.
+# Level IDs are examples; confirm them against your mod's Levels.txt.
+config_version = 1
+enabled = true
+random_salt = "mapping-example"
+
+[hud]
+enabled = true
+density_text = "Monster Density: {value}%"
+overflow_text = "+{value} more"
+max_lines = 16
+
+[cube_routes.scroll_map]
+inputs = ["tsc"]
+tier = "tier1"
+
+[tiers.tier1]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier1.groups.field]
+weight = 100
+levels = [2]
+entrances = [{ level = 2, weight = 100 }]
+density = 100
+trait_pool = []

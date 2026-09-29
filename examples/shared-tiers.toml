@@ -1,0 +1,77 @@
+# Complete example: three tiers reuse one Level pool in the same game.
+# Every craft rolls all groups. Overlap replaces the whole old group after it is clear.
+# Define matching Red Portal recipes for tsc, r01, and r02 in CubeMain.
+# Stat 39 and all Level IDs must match your effective mod data.
+config_version = 1
+
+[cube_routes.first]
+inputs = ["tsc"]
+tier = "tier1"
+
+[cube_routes.second]
+inputs = ["r01"]
+tier = "tier2"
+
+[cube_routes.third]
+inputs = ["r02"]
+tier = "tier3"
+
+[tiers.tier1]
+difficulty_rank = 1
+trait_count = { min = 0, max = 0 }
+base_stats = [{ stat_id = 39, target = "monster", value = 0 }]
+
+[tiers.tier1.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 100
+
+[tiers.tier1.groups.underground]
+levels = [8, 9]
+entrances = [{ level = 8, weight = 1 }]
+density = 100
+
+[tiers.tier1.groups.five_levels]
+levels = [21, 22, 23, 24, 25]
+entrances = [{ level = 21, weight = 1 }]
+density = 100
+
+[tiers.tier2]
+difficulty_rank = 2
+trait_count = { min = 0, max = 0 }
+base_stats = [{ stat_id = 39, target = "monster", value = 5 }]
+
+[tiers.tier2.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 150
+
+[tiers.tier2.groups.underground]
+levels = [8, 9]
+entrances = [{ level = 8, weight = 1 }]
+density = 150
+
+[tiers.tier2.groups.five_levels]
+levels = [21, 22, 23, 24, 25]
+entrances = [{ level = 21, weight = 1 }]
+density = 150
+
+[tiers.tier3]
+difficulty_rank = 3
+trait_count = { min = 0, max = 0 }
+base_stats = [{ stat_id = 39, target = "monster", value = 10 }]
+
+[tiers.tier3.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = 200
+
+[tiers.tier3.groups.underground]
+levels = [8, 9]
+entrances = [{ level = 8, weight = 1 }]
+density = 200
+
+[tiers.tier3.groups.five_levels]
+levels = [21, 22, 23, 24, 25]
+entrances = [{ level = 21, weight = 1 }]
+density = 200

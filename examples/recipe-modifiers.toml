@@ -1,0 +1,62 @@
+# Complete example: three exact recipes select the SAME tier with different traits.
+# CubeMain must define all three Red Portal recipes. Check stat/skill IDs in your mod.
+config_version = 1
+
+[traits.monster_attack]
+weight = 100
+text = "Monster Attack Speed {signed0}%"
+stats = [
+  { stat_id = 68, target = "monster", value = { min = 10, max = 30, step = 5 }, roll_group = "speed" },
+  { stat_id = 69, target = "monster", value = { min = 10, max = 30, step = 5 }, roll_group = "speed" }
+]
+
+[traits.monster_move]
+weight = 100
+text = "Monster Movement Speed {signed}%"
+stats = [{ stat_id = 67, target = "monster", value = { min = 10, max = 30, step = 5 } }]
+
+[traits.monster_cast]
+weight = 80
+text = "Monster Cast Speed {signed}%"
+stats = [{ stat_id = 105, target = "monster", value = { min = 10, max = 30, step = 5 } }]
+
+[traits.player_find]
+weight = 100
+text = "Player Magic Find {signed}%"
+stats = [{ stat_id = 80, target = "player", value = { min = 25, max = 100, step = 25 } }]
+
+[traits.conviction]
+weight = 50
+text = "Monster Aura: Conviction Lv.{value0}"
+monster_aura = { skill_id = 123, level = 10 }
+
+[modifiers.force_conviction]
+forced_traits = ["conviction"]
+
+[modifiers.speed_only]
+trait_pool_mode = "replace"
+trait_pool = ["monster_attack", "monster_move", "monster_cast"]
+trait_count = { min = 3, max = 3 }
+
+[cube_routes.plain]
+inputs = ["tsc"]
+tier = "tier1"
+
+[cube_routes.aura]
+inputs = ["tsc", "r01"]
+tier = "tier1"
+modifiers = ["force_conviction"]
+
+[cube_routes.speed]
+inputs = ["tsc", "r02"]
+tier = "tier1"
+modifiers = ["speed_only"]
+
+[tiers.tier1]
+trait_count = { min = 3, max = 3 }
+
+[tiers.tier1.groups.field]
+levels = [2]
+entrances = [{ level = 2, weight = 1 }]
+density = { min = 125, max = 200, step = 25 }
+trait_pool = ["monster_attack", "monster_move", "monster_cast", "player_find"]

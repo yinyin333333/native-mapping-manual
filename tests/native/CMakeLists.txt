@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.28)
+project(NativeMappingManualSourceCheck LANGUAGES CXX)
+
+set(NATIVE_MAPPING_SOURCE "" CACHE PATH "Native Mapping source root")
+set(TOMLPLUSPLUS_SOURCE "" CACHE PATH "Existing pinned toml++ source checkout")
+if(NOT EXISTS "${NATIVE_MAPPING_SOURCE}/mapping_core/src/config/RuntimeConfig.cpp")
+  message(FATAL_ERROR "Set NATIVE_MAPPING_SOURCE to the supplied plugin source root")
+endif()
+if(NOT EXISTS "${TOMLPLUSPLUS_SOURCE}/CMakeLists.txt")
+  message(FATAL_ERROR "Set TOMLPLUSPLUS_SOURCE to the existing toml++ checkout")
+endif()
+
+# Compile the original source files, not a copied implementation.
+set(NATIVE_MAPPING_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+add_subdirectory("${TOMLPLUSPLUS_SOURCE}" "${CMAKE_BINARY_DIR}/tomlplusplus")
+add_subdirectory("${NATIVE_MAPPING_SOURCE}/mapping_core" "${CMAKE_BINARY_DIR}/mapping_core")
+add_executable(manual_source_check check.cpp)
+target_link_libraries(manual_source_check PRIVATE NativeMapping::core tomlplusplus::tomlplusplus)
+target_compile_features(manual_source_check PRIVATE cxx_std_20)
+if(MSVC)
+  target_compile_options(manual_source_check PRIVATE /utf-8 /W4 /WX /permissive- /EHsc)
+endif()

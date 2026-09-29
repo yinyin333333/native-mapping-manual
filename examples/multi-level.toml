@@ -1,0 +1,17 @@
+# Complete example: one map spans five Levels; the portal enters Level 21.
+# Requires an exact tsc -> Red Portal recipe and usable Levels 21-25.
+config_version = 1
+
+[cube_routes.scroll_map]
+inputs = ["tsc"]
+tier = "tier1"
+
+[tiers.tier1]
+trait_count = { min = 0, max = 0 }
+
+[tiers.tier1.groups.five_levels]
+weight = 100
+levels = [21, 22, 23, 24, 25]
+entrances = [{ level = 21, weight = 100 }]
+density = 150
+trait_pool = []

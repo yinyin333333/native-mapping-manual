@@ -1,0 +1,156 @@
+# Complete example. Requires an exact isc -> Red Portal CubeMain recipe.
+# Use the Level IDs and stat IDs from your effective mod data.
+config_version = 1
+enabled = true
+random_salt = "native-mapping"
+
+[hud]
+enabled = true
+density_text = "Monster Density: {value}%"
+overflow_text = "+{value} more"
+max_lines = 16
+
+[traits.player_magic_find]
+weight = 100
+text = "Player Magic Find {signed}%"
+stats = [
+  { stat = "item_magicbonus", stat_id = 80, value = { min = 25, max = 150, step = 25 }, target = "player" }
+]
+
+[traits.player_gold_find]
+weight = 100
+text = "Player Extra Gold {signed}%"
+stats = [
+  { stat = "item_goldbonus", stat_id = 79, value = { min = 50, max = 150, step = 25 }, target = "player" }
+]
+
+[traits.monster_move_speed]
+weight = 100
+text = "Monster Walk/Run Speed {signed}%"
+stats = [
+  { stat = "velocitypercent", stat_id = 67, value = { min = 10, max = 30, step = 5 }, target = "monster" }
+]
+
+[traits.player_all_skills]
+weight = 100
+text = "Player All Skills {signed}"
+stats = [
+  { stat = "item_allskills", stat_id = 127, value = { min = 1, max = 2, step = 1 }, target = "player" }
+]
+
+[traits.player_maximum_mana]
+weight = 100
+text = "Player Maximum Mana {signed}%"
+stats = [
+  { stat = "item_maxmana_percent", stat_id = 77, value = { min = 10, max = 30, step = 5 }, target = "player" }
+]
+
+[traits.player_mana_regeneration]
+weight = 100
+text = "Player Mana Regeneration {signed}%"
+stats = [
+  { stat = "manarecoverybonus", stat_id = 27, value = { min = 25, max = 75, step = 25 }, target = "player" }
+]
+
+[traits.player_experience]
+weight = 100
+text = "Player Experience Gain {signed}%"
+stats = [
+  { stat = "item_addexperience", stat_id = 85, value = { min = 10, max = 50, step = 10 }, target = "player" }
+]
+
+[traits.monster_damage]
+weight = 100
+text = "Monster Damage {signed}%"
+stats = [
+  { stat = "damagepercent", stat_id = 25, value = { min = 20, max = 50, step = 10 }, target = "monster" }
+]
+
+[traits.monster_maximum_life]
+weight = 100
+text = "Monster Maximum Life {signed}%"
+stats = [
+  { stat = "item_maxhp_percent", stat_id = 76, value = { min = 10, max = 30, step = 5 }, target = "monster" }
+]
+
+[traits.player_all_resistance]
+weight = 100
+text = "Player All Resistances {signed0}%"
+stats = [
+  { stat = "fireresist", stat_id = 39, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" },
+  { stat = "lightresist", stat_id = 41, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" },
+  { stat = "coldresist", stat_id = 43, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" },
+  { stat = "poisonresist", stat_id = 45, value = { min = 10, max = 30, step = 5 }, target = "player", roll_group = "all_res" }
+]
+
+[traits.monster_fire_damage]
+weight = 100
+text = "Monster Added Fire Damage {value0}-{value1}"
+stats = [
+  { stat = "firemindam", stat_id = 48, value = { min = 10, max = 20, step = 5 }, target = "monster" },
+  { stat = "firemaxdam", stat_id = 49, value = { min = 30, max = 50, step = 10 }, target = "monster" }
+]
+
+[traits.monster_fire_pierce]
+weight = 100
+text = "Monster Enemy Fire Resistance -{value}%"
+stats = [
+  { stat = "passive_fire_pierce", stat_id = 333, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_life_replenish]
+weight = 100
+text = "Monster Replenish Life {signed}"
+stats = [
+  { stat = "hpregen", stat_id = 74, value = { min = 5, max = 15, step = 5 }, target = "monster" }
+]
+
+[traits.monster_conviction]
+weight = 100
+text = "Monster Aura: Conviction Lv.{value0}"
+monster_aura = { skill = "conviction", skill_id = 123, level = 10 }
+
+[cube_routes.identify_scroll]
+inputs = ["isc"]
+tier = "tier1"
+
+[tiers.tier1]
+trait_count = { min = 2, max = 2 }
+base_stats = [
+  { stat = "item_maxhp_percent", stat_id = 76, value = 50, target = "monster", text = "Monster Maximum Life {signed}%" }
+]
+
+[tiers.tier1.groups.act1_pit]
+weight = 200
+levels = [12, 16]
+entrances = [{ level = 12, weight = 100 }]
+density = 150
+trait_pool = ["player_magic_find", "player_gold_find", "monster_move_speed"]
+
+[tiers.tier1.groups.act2_arcane_sanctuary]
+weight = 100
+levels = [74]
+entrances = [{ level = 74, weight = 100 }]
+density = 125
+trait_pool = ["player_all_skills", "player_maximum_mana", "player_mana_regeneration"]
+
+[tiers.tier1.groups.act3_travincal]
+weight = 100
+levels = [83]
+entrances = [{ level = 83, weight = 100 }]
+density = 175
+trait_pool = ["player_experience", "monster_damage", "monster_maximum_life"]
+
+[tiers.tier1.groups.act4_chaos_sanctuary]
+weight = 50
+levels = [108]
+entrances = [{ level = 108, weight = 100 }]
+density = 150
+trait_pool = ["player_all_resistance", "monster_fire_damage", "monster_fire_pierce"]
+
+[tiers.tier1.groups.act5_worldstone_keep]
+weight = 50
+levels = [128, 129, 130, 131]
+entrances = [{ level = 128, weight = 100 }]
+density = 200
+trait_pool = ["player_all_skills", "monster_life_replenish", "monster_conviction"]
