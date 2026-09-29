@@ -1,6 +1,6 @@
 # Complete learning example. Requires an exact tsc -> Red Portal CubeMain recipe.
 # Confirm Level 39, MonStats Id zombie1 and SuperUniques Superunique Frozenstein
-# against your mod's effective data. Boss drops remain in TXT / Treasure Classes.
+# against your mod's effective data. Optional tier TC rules are configured separately.
 config_version = 1
 enabled = true
 random_salt = "mapping-example"

@@ -1,0 +1,3 @@
+Tier	Id	TreasureClass(H)	TreasureClassChamp(H)
+tier1	skeleton1	NM_T1_Normal	NM_T1_Champion
+tier2	skeleton1	NM_T2_Normal	

@@ -1,5 +1,12 @@
 # Requires custom nm1/nm2/nm3 items and exact Red Portal CubeMain recipes.
 # Define Mapping_Tier1 and Mapping_Tier2 in TreasureClassEx before enabling.
+# Tier-specific rewards require a separate monstats.txt configuration.
+# Edit this file inside the d2rl-native-mapping.mpq folder beside the plugin DLL:
+# data/global/excel/d2rloader/native-mapping/monstats.txt
+# For skeleton1, set TreasureClass, TreasureClass(N) and TreasureClass(H) to
+# Mapping_Tier1 in tier1 and Mapping_Tier2 in tier2.
+# This changes normal-monster rewards in Normal, Nightmare and Hell.
+# Other drop categories keep their original TC fields.
 # Levels and stats below are illustrative; use effective mod data.
 config_version = 1
 
@@ -38,21 +45,29 @@ base_stats = [
   { stat_id = 45, target = "monster", value = 0 },
 ]
 
-[tiers.tier1.progression]
-treasure_class = "Mapping_Tier1"
-trigger = "all_monsters"
-
 [tiers.tier1.groups.route1]
 levels = [2]
 entrances = [{ level = 2, weight = 1 }]
 density = 150
 trait_pool = ["hunters", "armored"]
 
+[tiers.tier1.groups.route1.monsters.2]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
+
 [tiers.tier1.groups.route2]
 levels = [3]
 entrances = [{ level = 3, weight = 1 }]
 density = 150
 trait_pool = ["hunters", "armored"]
+
+[tiers.tier1.groups.route2.monsters.3]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
 
 [tiers.tier2]
 difficulty_rank = 2
@@ -64,21 +79,35 @@ base_stats = [
   { stat_id = 45, target = "monster", value = 5 },
 ]
 
-[tiers.tier2.progression]
-treasure_class = "Mapping_Tier2"
-trigger = "all_monsters"
-
 [tiers.tier2.groups.route1]
 levels = [8, 9]
 entrances = [{ level = 8, weight = 1 }]
 density = 200
 trait_pool = ["hunters", "armored"]
 
+[tiers.tier2.groups.route1.monsters.8]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
+
+[tiers.tier2.groups.route1.monsters.9]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
+
 [tiers.tier2.groups.route2]
 levels = [10]
 entrances = [{ level = 10, weight = 1 }]
 density = 200
 trait_pool = ["hunters", "armored"]
+
+[tiers.tier2.groups.route2.monsters.10]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
 
 [tiers.tier3]
 difficulty_rank = 3

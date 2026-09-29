@@ -1,6 +1,6 @@
 # Native Mapping configuration manual
 
-An English static manual for Native Mapping, with thirteen chapters, explanatory diagrams, reference tables, eleven worked example pages and sixteen complete TOML examples. It includes map selection, repeatable Level regeneration and whole-group replacement, recipe modifiers, per-Level monster pools, random SuperUniques, density and stats, auras, supplemental Treasure Classes, HUD setup and TCP/IP behavior. There are no simulators or configuration controls.
+An English static manual for Native Mapping, with thirteen chapters, explanatory diagrams, reference tables, eleven worked example pages and sixteen complete TOML examples. It includes map selection, repeatable Level regeneration and whole-group replacement, recipe modifiers, per-Level monster pools, random SuperUniques, density and stats, auras, optional tier-based TC replacements for selected monsters and SuperUniques, HUD setup and TCP/IP behavior. There are no simulators or configuration controls.
 
 ## Local preview
 
@@ -30,3 +30,5 @@ The installation chapter includes effective-data ID lookup, complete CubeMain fi
 The monster chapter walks mod authors through editing an existing group, replacing pools, adding a boss without changing ordinary monsters, setting its chance, and running the map again. `map-monsters.toml` provides a complete Level 39 example with `zombie1` and `Frozenstein` at 100%.
 
 The expanded examples include a full 25-group / 83-trait pool, five regions with distinct trait pools, and an isolated player All Skills check. Each has a guide and a matching complete download. The full pool preserves its reference configuration; it is not a guarantee that every listed stat affects every monster.
+
+The Treasure Class chapter covers companion table setup, difficulty and category columns, inheritance, and updating older configurations. The downloads use the actual filenames `monstats.txt` and `superuniques.txt`. Save them in `d2rl-native-mapping.mpq/data/global/excel/d2rloader/native-mapping/` beside the plugin DLL. The `examples/tc-overrides/` directory holds the small examples; `examples/tier-progression/monstats.txt` contains the reward rules for both three-tier TOML examples. Merge the needed rows if you already have rules in those files.

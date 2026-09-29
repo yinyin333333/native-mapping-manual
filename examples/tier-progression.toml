@@ -1,7 +1,13 @@
 # Complete TOML example, with external data requirements:
 # Create nm2/nm3 items, the three exact Red Portal recipes, and the two named TCs.
 # Mapping_Tier1 can drop nm2; Mapping_Tier2 can drop nm3. Probabilities belong in TXT.
-# Do not reference these TCs from ordinary drop tables if the reward is tier-only.
+# Tier-specific rewards require a separate monstats.txt configuration.
+# Edit this file inside the d2rl-native-mapping.mpq folder beside the plugin DLL:
+# data/global/excel/d2rloader/native-mapping/monstats.txt
+# For skeleton1, set TreasureClass, TreasureClass(N) and TreasureClass(H) to
+# Mapping_Tier1 in tier1 and Mapping_Tier2 in tier2.
+# This changes normal-monster rewards in Normal, Nightmare and Hell.
+# Other drop categories keep their original TC fields.
 config_version = 1
 
 [cube_routes.first]
@@ -19,26 +25,36 @@ tier = "tier3"
 [tiers.tier1]
 trait_count = { min = 0, max = 0 }
 
-[tiers.tier1.progression]
-treasure_class = "Mapping_Tier1"
-trigger = "all_monsters"
-
 [tiers.tier1.groups.field]
 levels = [2]
 entrances = [{ level = 2, weight = 1 }]
 density = 100
 
+[tiers.tier1.groups.field.monsters.2]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
+
 [tiers.tier2]
 trait_count = { min = 0, max = 0 }
-
-[tiers.tier2.progression]
-treasure_class = "Mapping_Tier2"
-trigger = "all_monsters"
 
 [tiers.tier2.groups.underground]
 levels = [8, 9]
 entrances = [{ level = 8, weight = 1 }]
 density = 150
+
+[tiers.tier2.groups.underground.monsters.8]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
+
+[tiers.tier2.groups.underground.monsters.9]
+nummon = 1
+mon = ["skeleton1"]
+nmon = ["skeleton1"]
+umon = ["skeleton1"]
 
 [tiers.tier3]
 trait_count = { min = 0, max = 0 }

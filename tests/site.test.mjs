@@ -26,8 +26,8 @@ test('all static assets and the complete configuration download exist', async ()
     assert.ok((await stat(path.join(siteRoot, relative))).isFile(), relative);
   }
   assert.equal([...html.matchAll(/data-kind="complete"/g)].length, 2);
-  assert.equal([...html.matchAll(/data-kind="excerpt"/g)].length, 8);
-  assert.equal([...html.matchAll(/data-context="examples\/[^"]+"/g)].length, 8);
+  assert.equal([...html.matchAll(/data-kind="excerpt"/g)].length, 7);
+  assert.equal([...html.matchAll(/data-context="examples\/[^"]+"/g)].length, 7);
 });
 
 test('preview serves both root and project-subpath URLs, but not maintenance output', async () => {
